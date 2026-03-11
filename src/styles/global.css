@@ -135,3 +135,56 @@ article img {
   opacity: 0;
   transform: translateY(10px);
 } */
+
+/* Admonition Styles */
+.admonition {
+  @apply relative my-6 rounded-r-lg border-l-4 p-4 pl-4 pr-4 transition-colors duration-300 ease-in-out;
+}
+
+.admonition-title {
+  @apply font-bold uppercase text-sm mb-2 tracking-wider;
+}
+
+.admonition p {
+  @apply my-0 text-sm leading-relaxed;
+}
+
+/* Tip */
+.admonition.tip {
+  @apply bg-emerald-50 border-emerald-500 text-emerald-900 border-l-[6px] dark:bg-emerald-950/30 dark:border-emerald-400 dark:text-emerald-100;
+}
+.admonition.tip .admonition-title {
+  @apply text-emerald-800 dark:text-emerald-300;
+}
+
+/* Note */
+.admonition.note {
+  @apply bg-blue-50 border-blue-500 text-blue-900 border-l-[6px] dark:bg-blue-950/30 dark:border-blue-400 dark:text-blue-100;
+}
+.admonition.note .admonition-title {
+  @apply text-blue-800 dark:text-blue-300;
+}
+
+/* Important */
+.admonition.important {
+  @apply bg-purple-50 border-purple-500 text-purple-900 border-l-[6px] dark:bg-purple-950/30 dark:border-purple-400 dark:text-purple-100;
+}
+.admonition.important .admonition-title {
+  @apply text-purple-800 dark:text-purple-300;
+}
+
+/* Warning */
+.admonition.warning {
+  @apply bg-amber-50 border-amber-500 text-amber-900 border-l-[6px] dark:bg-amber-950/30 dark:border-amber-400 dark:text-amber-100;
+}
+.admonition.warning .admonition-title {
+  @apply text-amber-800 dark:text-amber-300;
+}
+
+/* Caution */
+.admonition.caution {
+  @apply bg-red-50 border-red-500 text-red-900 border-l-[6px] dark:bg-red-950/30 dark:border-red-400 dark:text-red-100;
+}
+.admonition.caution .admonition-title {
+  @apply text-red-800 dark:text-red-300;
+}

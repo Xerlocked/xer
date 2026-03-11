@@ -2,6 +2,7 @@
 title: "Astro Sphere: Writing Markdown"
 summary: "Basic Markdown syntax that can be used when writing Markdown content in Astro Sphere."
 date: "Mar 13 2024"
+heroImage: "./spongebob.png"
 draft: false
 tags:
 - Tutorial
@@ -11,6 +12,30 @@ tags:
 ---
 
 ### Headings
+
+:::tip
+This is a standard TIP admonition! It provides helpful information to the user.
+- Item 1
+- Item 2
+- Item 3
+:::
+
+:::note
+This is a NOTE admonition! Just some extra details you might want to know.
+> This is a blockquote inside a note admonition!
+:::
+
+:::important[Attention Required]
+This is an IMPORTANT admonition, using a custom title!
+:::
+
+:::warning
+This is a WARNING admonition! Be careful when proceeding.
+:::
+
+:::caution
+This is a CAUTION admonition! You are entering the danger zone.
+:::
 
 ```text
 # H1
