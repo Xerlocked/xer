@@ -13,14 +13,13 @@ interface Props {
     height?: number;
 }
 
-const { src, alt, id, width, height } = Astro.props;
+const { src, alt, id } = Astro.props;
 const className = Astro.props.class;
 
 const isLocal = !(
     src.startsWith("/") ||
     src.startsWith("http")
 );
-const isPublic = src.startsWith("/");
 
 let imageLoad;
 if (isLocal) {
