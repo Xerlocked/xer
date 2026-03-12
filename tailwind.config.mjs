@@ -13,6 +13,31 @@ export default {
         DEFAULT: {
           css: {
             maxWidth: "full",
+            code: {
+              color: "#eb5757",
+              backgroundColor: "rgba(135, 131, 120, 0.15)",
+              padding: "0.2em 0.4em",
+              margin: "0 0.2rem",
+              borderRadius: "0.275rem",
+              fontFamily: "Pretendard",
+              fontWeight: "400",
+            },
+            "code::before": { content: '""' },
+            "code::after": { content: '""' },
+            "pre code": {
+              backgroundColor: "transparent",
+              color: "inherit",
+              padding: "0",
+              fontWeight: "inherit",
+            },
+          },
+        },
+        invert: {
+          css: {
+            code: {
+              color: "#ff7369",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
           },
         },
       },
