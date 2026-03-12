@@ -1,0 +1,7 @@
+{
+	"name": "blog-v2",
+	"compatibility_date": "2026-03-12", // 배포하는 날짜로 업데이트합니다.
+	"assets": {
+		"directory": "./dist"
+	}
+}
