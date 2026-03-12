@@ -36,7 +36,6 @@ export default {
           css: {
             code: {
               color: "#ff7369",
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
             },
           },
         },
