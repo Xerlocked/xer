@@ -1,9 +1,10 @@
 import type { CollectionEntry } from "astro:content"
-import { createEffect, createSignal, For, onMount } from "solid-js"
-import Fuse from "fuse.js"
+import { createEffect, createMemo, createSignal, For, onMount } from "solid-js"
 import ArrowCard from "@components/ArrowCard"
 import { cn } from "@lib/utils"
 import SearchBar from "@components/SearchBar"
+
+const POSTS_PER_PAGE = 10;
 
 type Props = {
   entry_name: string
@@ -16,29 +17,78 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
 
   const [query, setQuery] = createSignal("");
   const [filter, setFilter] = createSignal(new Set<string>())
-  const [collection, setCollection] = createSignal<CollectionEntry<'blog'>[]>([])
   const [descending, setDescending] = createSignal(false);
+  const [currentPage, setCurrentPage] = createSignal(1);
 
-  const fuse = new Fuse(coerced, {
-    keys: ["slug", "data.title", "data.summary", "data.tags"],
-    includeMatches: true,
-    minMatchCharLength: 2,
-    threshold: 0.4,
-  })
+  const collection = createMemo(() => {
+    const q = query().toLowerCase();
+    const f = filter();
+    
+    // First, filter by query
+    let filtered = coerced;
+    if (q.length >= 2) {
+      filtered = coerced.filter(entry => {
+        return (
+          entry.slug.toLowerCase().includes(q) ||
+          entry.data.title.toLowerCase().includes(q) ||
+          (entry.data.summary && entry.data.summary.toLowerCase().includes(q)) ||
+          entry.data.tags.some((tag: string) => tag.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    // Then, filter by selected tags
+    if (f.size > 0) {
+      filtered = filtered.filter((entry) =>
+        Array.from(f).every((value) =>
+          entry.data.tags.some((tag: string) =>
+            tag.toLowerCase() === String(value).toLowerCase()
+          )
+        )
+      );
+    }
+    
+    return descending() ? filtered.toReversed() : filtered;
+  });
 
   createEffect(() => {
-    const filtered = (query().length < 2
-      ? coerced
-      : fuse.search(query()).map((result) => result.item)
-    ).filter((entry) =>
-      Array.from(filter()).every((value) =>
-        entry.data.tags.some((tag: string) =>
-          tag.toLowerCase() === String(value).toLowerCase()
-        )
-      )
-    );
-    setCollection(descending() ? filtered.toReversed() : filtered)
-  })
+    // Reset page to 1 when search, filter, or sort changes
+    query();
+    filter();
+    descending();
+    setCurrentPage(1);
+  });
+
+  const totalPages = createMemo(() => Math.max(1, Math.ceil(collection().length / POSTS_PER_PAGE)));
+
+  const paginatedCollection = createMemo(() => {
+    const start = (currentPage() - 1) * POSTS_PER_PAGE;
+    return collection().slice(start, start + POSTS_PER_PAGE);
+  });
+
+  // Generate visible page numbers with ellipsis
+  const pageNumbers = createMemo(() => {
+    const total = totalPages();
+    const current = currentPage();
+    const pages: (number | string)[] = [];
+
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push("ellipsis-start");
+      const start = Math.max(2, current - 1);
+      const end = Math.min(total - 1, current + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (current < total - 2) pages.push("ellipsis-end");
+      pages.push(total);
+    }
+    return pages;
+  });
+
+  function goToPage(page: number) {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages())));
+  }
 
   function toggleDescending() {
     setDescending(!descending())
@@ -152,12 +202,72 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
             </button>
           </div>
           <ul class="flex flex-col gap-3">
-            {collection().map((entry) => (
-              <li>
-                <ArrowCard entry={entry} />
-              </li>
-            ))}
+            <For each={paginatedCollection()}>
+              {(entry) => (
+                <li>
+                  <ArrowCard entry={entry} />
+                </li>
+              )}
+            </For>
           </ul>
+
+          {/* Pagination */}
+          {totalPages() > 1 && (
+            <nav class="flex items-center justify-center gap-1 mt-6" aria-label="Pagination">
+              {/* Previous Button */}
+              <button
+                onClick={() => goToPage(currentPage() - 1)}
+                disabled={currentPage() === 1}
+                class={cn(
+                  "px-3 py-2 rounded-lg text-sm transition-colors duration-300 ease-in-out",
+                  currentPage() === 1
+                    ? "text-black/25 dark:text-white/25 cursor-not-allowed"
+                    : "text-black/75 dark:text-white/75 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                )}
+                aria-label="이전 페이지"
+              >
+                «
+              </button>
+
+              {/* Page Numbers */}
+              <For each={pageNumbers()}>
+                {(page) =>
+                  typeof page === "string" ? (
+                    <span class="px-2 py-2 text-sm text-black/50 dark:text-white/50">…</span>
+                  ) : (
+                    <button
+                      onClick={() => goToPage(page)}
+                      class={cn(
+                        "min-w-[2.25rem] px-2 py-2 rounded-lg text-sm font-medium transition-colors duration-300 ease-in-out",
+                        currentPage() === page
+                          ? "bg-black text-white dark:bg-white dark:text-black"
+                          : "text-black/75 dark:text-white/75 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                      )}
+                      aria-label={`${page}페이지`}
+                      aria-current={currentPage() === page ? "page" : undefined}
+                    >
+                      {page}
+                    </button>
+                  )
+                }
+              </For>
+
+              {/* Next Button */}
+              <button
+                onClick={() => goToPage(currentPage() + 1)}
+                disabled={currentPage() === totalPages()}
+                class={cn(
+                  "px-3 py-2 rounded-lg text-sm transition-colors duration-300 ease-in-out",
+                  currentPage() === totalPages()
+                    ? "text-black/25 dark:text-white/25 cursor-not-allowed"
+                    : "text-black/75 dark:text-white/75 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                )}
+                aria-label="다음 페이지"
+              >
+                »
+              </button>
+            </nav>
+          )}
         </div>
       </div>
     </div>

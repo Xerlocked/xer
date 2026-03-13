@@ -1,45 +1,28 @@
-const codeBlocks = document.querySelectorAll('pre:has(code)');
+// Event delegation for code block copy buttons
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.code-copy-btn');
+  if (!btn) return;
 
-//add copy btn to every code block on the dom
-codeBlocks.forEach((code) => {
-  //button icon
-  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-  use.setAttribute('href', '/copy.svg#empty');
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.classList.add('copy-svg');
-  svg.appendChild(use);
+  const codeBlock = btn.closest('.code-block');
+  if (!codeBlock) return;
 
-  //create button
-  const btn = document.createElement('button');
-  btn.appendChild(svg);
-  btn.classList.add('copy-btn');
-  btn.addEventListener('click', (e) => copyCode(e));
+  const codeElement = codeBlock.querySelector('pre code');
+  if (!codeElement) return;
 
-  //container to fix copy button
-  const container = document.createElement('div');
-  container.classList.add('copy-cnt');
-  container.appendChild(btn);
+  // Clone the code element and remove line numbers before copying
+  const clone = codeElement.cloneNode(true);
+  clone.querySelectorAll('.line-number').forEach((ln) => ln.remove());
+  const text = clone.innerText;
 
-  //add to code block
-  code.classList.add('relative');
-  code.appendChild(container);
+  navigator.clipboard.writeText(text).then(() => {
+    const copyIcon = btn.querySelector('.copy-icon');
+    const checkIcon = btn.querySelector('.check-icon');
+    if (copyIcon) copyIcon.style.display = 'none';
+    if (checkIcon) checkIcon.style.display = 'block';
+
+    setTimeout(() => {
+      if (copyIcon) copyIcon.style.display = 'block';
+      if (checkIcon) checkIcon.style.display = 'none';
+    }, 2000);
+  });
 });
-
-/**
-* @param {MouseEvent} event
-*/
-function copyCode(event) {
-  let codeBlock = getChildByTagName(event.currentTarget.parentElement.parentElement, 'CODE')
-  navigator.clipboard.writeText(codeBlock.innerText)
-  const use = getChildByTagName(getChildByTagName(event.currentTarget, 'svg'), 'use');
-  use.setAttribute('href', '/copy.svg#filled')
-  setTimeout(() => {
-    if (use) {
-      use.setAttribute('href', '/copy.svg#empty')
-    }
-  }, 100);
-}
-
-function getChildByTagName(element, tagName) {
-  return Array.from(element.children).find((child) => child.tagName === tagName);
-}

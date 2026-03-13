@@ -3,7 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --copy-btn-margin: 10px;
+  --code-bg: #f6f8fa;
+  --code-header-bg: #ebedf0;
+  --code-border: #d0d7de;
+  --code-text: #1f2328;
+  --code-meta: #656d76;
+  --code-line-number: #8b949e;
+  --code-header-text: #1f2328;
 }
 
 @layer base {
@@ -29,12 +35,18 @@ html {
   color-scheme: light;
   background-color: white;
   font-family: "Pretendard", sans-serif;
-
 }
 
 html.dark {
   color-scheme: dark;
   background-color: black;
+  --code-bg: #161b22;
+  --code-header-bg: #1c2129;
+  --code-border: #30363d;
+  --code-text: #c9d1d9;
+  --code-meta: #8b949e;
+  --code-line-number: #484f58;
+  --code-header-text: #c9d1d9;
 }
 
 html,
@@ -109,20 +121,108 @@ article img {
   margin: 0 auto;
 }
 
-.copy-cnt {
-  @apply absolute w-full;
-  top: var(--copy-btn-margin);
+/* Dual theme support for Shiki */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: transparent !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
 }
 
-.copy-btn {
-  @apply w-[30px] fixed;
-  left: calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
+html.dark .astro-code,
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: transparent !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
 }
 
-.copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
+/* Code Block Container */
+.code-block {
+  @apply my-6 rounded-lg overflow-hidden;
+  border: 1px solid var(--code-border);
 }
+
+/* Code Block Header Bar */
+.code-header {
+  @apply flex items-center justify-between px-4 py-2;
+  background-color: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+  min-height: 40px;
+}
+
+.code-header-left {
+  @apply flex items-center gap-2;
+}
+
+.code-header-right {
+  @apply flex items-center gap-3;
+}
+
+.code-filename {
+  @apply text-sm font-semibold;
+  color: var(--code-header-text);
+}
+
+.code-meta {
+  @apply text-xs font-mono;
+  color: var(--code-meta);
+}
+
+.code-copy-btn {
+  @apply flex items-center justify-center p-1 rounded transition-colors duration-200;
+  color: var(--code-meta);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.code-copy-btn:hover {
+  color: var(--code-header-text);
+  background-color: rgba(128, 128, 128, 0.15);
+}
+
+/* Override <pre> inside code-block */
+.code-block pre.astro-code {
+  @apply !m-0 !rounded-none py-4 px-0 overflow-x-auto;
+  background-color: var(--code-bg) !important;
+}
+
+.code-block pre.astro-code code {
+  @apply text-sm leading-relaxed block;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  counter-reset: line;
+}
+
+/* Line styling */
+.code-block pre.astro-code code .line {
+  @apply inline-block w-full;
+  padding: 0 1rem 0 0;
+  min-height: 1.5em;
+}
+
+/* Line number */
+.line-number {
+  @apply inline-block text-right select-none;
+  width: 3rem;
+  padding-right: 1rem;
+  margin-right: 0.5rem;
+  color: var(--code-line-number);
+  font-size: 0.8em;
+  border-right: 1px solid var(--code-border);
+  user-select: none;
+}
+
+/* Ensure article prose doesn't override code-block styles */
+article .code-block pre {
+  @apply !bg-transparent;
+}
+
+article .code-block {
+  @apply !max-w-full;
+}
+
 
 /* Card transition */
 /* .fade-move-enter-active,
