@@ -109,19 +109,57 @@ article img {
   margin: 0 auto;
 }
 
-.copy-cnt {
-  @apply absolute w-full;
-  top: var(--copy-btn-margin);
+/* Code Block Custom Styles */
+.custom-code-wrapper {
+  @apply my-6 rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-sm relative text-sm;
+  background-color: #1e1e1e; /* Dark background matching the image */
 }
 
-.copy-btn {
-  @apply w-[30px] fixed;
-  left: calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
+/* Ensure original Astro Shiki styles don't override our rounded corners and backgrounds */
+.custom-code-wrapper > pre {
+  @apply !bg-transparent !m-0 !rounded-none !border-none;
+  padding: 1rem 0 !important;
+  overflow-x: auto;
+}
+
+.custom-code-header {
+  @apply flex justify-between items-center px-4 py-2 border-b border-white/10;
+  background-color: #2d2d2d; /* Slightly lighter dark gray for header */
+  color: #a0a0a0;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+}
+
+.custom-code-title {
+  @apply font-medium text-white/90;
+}
+
+.custom-code-meta {
+  @apply flex items-center gap-3 text-xs tracking-wider;
+}
+
+.copy-btn-new {
+  @apply w-[18px] h-[18px] ml-1 flex items-center justify-center transition-opacity opacity-70 hover:opacity-100 cursor-pointer;
 }
 
 .copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
+  @apply w-full h-full text-current;
+}
+
+/* Line numbers integration */
+.custom-code-wrapper code {
+  @apply grid;
+  counter-reset: line;
+}
+
+.custom-code-wrapper .line {
+  @apply inline-block w-full px-4;
+}
+
+.custom-code-wrapper .line::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-[2ch] mr-4 text-right select-none;
+  color: #5c5c5c;
 }
 
 /* Card transition */
