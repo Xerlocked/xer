@@ -44,6 +44,11 @@ body {
   @apply text-black/75 dark:text-white/75;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  @apply break-words;
+  word-break: keep-all;
+}
+
 body {
   @apply relative flex flex-col;
 }
