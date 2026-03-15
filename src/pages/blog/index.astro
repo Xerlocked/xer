@@ -14,9 +14,8 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
   (a, b) => a.localeCompare(b),
 );
 
-const initial_posts_count = Math.min(posts.length, 10);
 const estimated_initial_size =
-  28 + initial_posts_count * 158 + (initial_posts_count - 1) * 12;
+  28 + posts.length * 158 + (posts.length - 1) * 12;
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>

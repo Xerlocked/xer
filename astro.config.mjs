@@ -7,7 +7,6 @@ import remarkDirective from "remark-directive"
 import remarkAdmonitions from "./src/lib/remark-admonitions.mjs"
 import remarkGithub from "./src/lib/remark-github.mjs"
 import rehypeImageCaption from "./src/lib/rehype-image-caption.mjs"
-import rehypeCodeBlock from "./src/lib/rehype-code-block.mjs"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 
@@ -16,13 +15,7 @@ export default defineConfig({
   site: "https://xerlocked.com",
   integrations: [mdx(), sitemap(), solidJs(), tailwind({ applyBaseStyles: false })],
   markdown: {
-    shikiConfig: {
-      themes: {
-        light: "github-light",
-        dark: "github-dark",
-      },
-    },
     remarkPlugins: [remarkDirective, remarkAdmonitions, remarkGithub, remarkMath],
-    rehypePlugins: [rehypeImageCaption, rehypeKatex, rehypeCodeBlock],
+    rehypePlugins: [rehypeImageCaption, rehypeKatex],
   },
 })
