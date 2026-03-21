@@ -103,5 +103,15 @@
       <path d="M 6 5 v 13"/>
       <path d="M 3 8 l 3 -3 l 3 3"/>
     </symbol>
+
+    <!-- chevron-left -->
+    <symbol id="chevron-left" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6"/>
+    </symbol>
+
+    <!-- chevron-right -->
+    <symbol id="chevron-right" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M9 18l6-6-6-6"/>
+    </symbol>
   </defs>
 </svg>

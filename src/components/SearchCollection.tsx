@@ -1,9 +1,11 @@
 import type { CollectionEntry } from "astro:content"
-import { createEffect, createSignal, For, onMount } from "solid-js"
+import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js"
 import Fuse from "fuse.js"
 import ArrowCard from "@components/ArrowCard"
 import { cn } from "@lib/utils"
 import SearchBar from "@components/SearchBar"
+
+const POSTS_PER_PAGE = 10;
 
 type Props = {
   entry_name: string
@@ -18,6 +20,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
   const [filter, setFilter] = createSignal(new Set<string>())
   const [collection, setCollection] = createSignal<CollectionEntry<'blog'>[]>([])
   const [descending, setDescending] = createSignal(false);
+  const [currentPage, setCurrentPage] = createSignal(1);
 
   const fuse = new Fuse(coerced, {
     keys: ["slug", "data.title", "data.summary", "data.tags"],
@@ -38,7 +41,32 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
       )
     );
     setCollection(descending() ? filtered.toReversed() : filtered)
+    setCurrentPage(1);
   })
+
+  const totalPages = createMemo(() => Math.ceil(collection().length / POSTS_PER_PAGE));
+
+  const paginatedCollection = createMemo(() => {
+    const start = (currentPage() - 1) * POSTS_PER_PAGE;
+    return collection().slice(start, start + POSTS_PER_PAGE);
+  });
+
+  // Compute visible page numbers with ellipsis
+  const pageNumbers = createMemo(() => {
+    const total = totalPages();
+    const current = currentPage();
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | "...")[] = [1];
+    if (current > 3) pages.push("...");
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (current < total - 2) pages.push("...");
+    pages.push(total);
+    return pages;
+  });
 
   function toggleDescending() {
     setDescending(!descending())
@@ -152,12 +180,74 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
             </button>
           </div>
           <ul class="flex flex-col gap-3">
-            {collection().map((entry) => (
+            {paginatedCollection().map((entry) => (
               <li>
                 <ArrowCard entry={entry} />
               </li>
             ))}
           </ul>
+
+          {/* Pagination */}
+          <Show when={totalPages() > 1}>
+            <nav class="flex items-center justify-center gap-1 mt-6">
+              {/* Previous */}
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage() === 1}
+                class={cn(
+                  "p-2 rounded-lg transition-colors duration-200",
+                  "stroke-current",
+                  currentPage() === 1
+                    ? "text-neutral-300 dark:text-neutral-600 cursor-not-allowed"
+                    : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                )}
+                aria-label="이전 페이지"
+              >
+                <svg class="size-5">
+                  <use href="/ui.svg#chevron-left" />
+                </svg>
+              </button>
+
+              {/* Page Numbers */}
+              <For each={pageNumbers()}>
+                {(page) =>
+                  page === "..." ? (
+                    <span class="px-2 text-neutral-400 dark:text-neutral-500 select-none">…</span>
+                  ) : (
+                    <button
+                      onClick={() => setCurrentPage(page as number)}
+                      class={cn(
+                        "min-w-[2.25rem] h-9 px-2 rounded-lg text-sm font-medium transition-colors duration-200",
+                        currentPage() === page
+                          ? "bg-black/10 dark:bg-white/15 text-black dark:text-white"
+                          : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                      )}
+                    >
+                      {page}
+                    </button>
+                  )
+                }
+              </For>
+
+              {/* Next */}
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(totalPages(), p + 1))}
+                disabled={currentPage() === totalPages()}
+                class={cn(
+                  "p-2 rounded-lg transition-colors duration-200",
+                  "stroke-current",
+                  currentPage() === totalPages()
+                    ? "text-neutral-300 dark:text-neutral-600 cursor-not-allowed"
+                    : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                )}
+                aria-label="다음 페이지"
+              >
+                <svg class="size-5">
+                  <use href="/ui.svg#chevron-right" />
+                </svg>
+              </button>
+            </nav>
+          </Show>
         </div>
       </div>
     </div>
