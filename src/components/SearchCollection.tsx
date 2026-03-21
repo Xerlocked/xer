@@ -85,6 +85,11 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
     setFilter(new Set<string>());
   }
 
+  function goToPage(page: number) {
+    setCurrentPage(page);
+    document.getElementById("post-list-top")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   const onSearchInput = (e: Event) => {
     const target = e.target as HTMLInputElement
     setQuery(target.value)
@@ -163,7 +168,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
       <div class="col-span-3 sm:col-span-2">
         <div class="flex flex-col">
           {/* Info Bar */}
-          <div class='flex justify-between flex-row mb-2'>
+          <div id="post-list-top" class='flex justify-between flex-row mb-2'>
             <div class="text-sm uppercase">
               전체 {data.length}개 | 선택됨 {collection().length}개
             </div>
@@ -192,7 +197,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
             <nav class="flex items-center justify-center gap-1 mt-6">
               {/* Previous */}
               <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                onClick={() => goToPage(Math.max(1, currentPage() - 1))}
                 disabled={currentPage() === 1}
                 class={cn(
                   "p-2 rounded-lg transition-colors duration-200",
@@ -215,7 +220,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                     <span class="px-2 text-neutral-400 dark:text-neutral-500 select-none">…</span>
                   ) : (
                     <button
-                      onClick={() => setCurrentPage(page as number)}
+                      onClick={() => goToPage(page as number)}
                       class={cn(
                         "min-w-[2.25rem] h-9 px-2 rounded-lg text-sm font-medium transition-colors duration-200",
                         currentPage() === page
@@ -231,7 +236,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
 
               {/* Next */}
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages(), p + 1))}
+                onClick={() => goToPage(Math.min(totalPages(), currentPage() + 1))}
                 disabled={currentPage() === totalPages()}
                 class={cn(
                   "p-2 rounded-lg transition-colors duration-200",
