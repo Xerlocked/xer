@@ -13,7 +13,9 @@ tags:
 
 이번 글에서는 제가 Gameplay Ability System(GAS) 을 확장해서 만든 Input Queue 시스템을 정리해보려고 합니다.
 
-핵심 아이디어는 간단합니다.지금 당장 실행할 수 없는 입력을 잠시 저장해두고, 실행 가능한 시점이 오면 Ability를 활성화한다.
+핵심 아이디어는 간단합니다.
+
+_지금 당장 실행할 수 없는 입력을 잠시 저장해두고, 실행 가능한 시점이 오면 Ability를 활성화한다._
 
 이 구조를 통해 다음과 같은 문제를 해결할 수 있습니다.
 - 공격 중 다음 행동을 미리 넣는 선입력
@@ -101,9 +103,9 @@ struct FInputBufferEntry
 - ValidityDuration: 입력이 유효한 시간
 
 예를 들어 이런 식으로 설정할 수 있습니다.
-- 가벼운 공격: 유효 시간 0.3초
-- 회피: 유효 시간 0.15초, 우선순위 높에
-- 강공격: 유효 시간 조금 더 길게
+- 일반공격: 유효 시간 0.3초
+- 회피: 유효 시간 0.15초, 우선순위 10(높음)
+- 강공격: 유효 시간 0.75초
 
 이런 값을 하드코딩하지 않고 데이터로 분리하면 전투 감각 튜닝이 훨씬 쉬워집니다. 이렇게 입력 설정의 구조체를 만들고 DataAsset 형태의 설정 오브젝트로 만듭니다.
 
@@ -188,7 +190,7 @@ struct FBufferedInput
     }
 };
 ```
-이 구조체는 단순 데이터 저장용이지만, 몇 가지 중요한 의미가 있습니다.
+
 - **TimeStamp**: 입력이 언제들어왔는지 기록합니다. 이를 통해 유효 시간을 계산합니다.
 - **IsValid()**: 현재 시점 기준으로 유효한 입력인지 확인합니다.
 - **Priority**: 향후 우선순위 기반 선택 정책으로 확장 가능성
@@ -258,7 +260,7 @@ private:
     bool bShowDebug;
 };
 ```
-이 클래스의 핵심 책임은 아래 다섯 가지입니다.
+이 클래스의 핵심은 다음과 같습니다.
 
 - 입력 저장
 - 허용 태그 필터링
@@ -270,7 +272,7 @@ private:
 
 ## 4. 버퍼 윈도우
 
-이 시스템에서 가장 중요한 설계 포인트 중 하나는 항상 입력을 받는 것이 아닌, 특정 시간에만 받도록 했습니다.
+입력 시스템에서 중요한 설계 포인트 중 하나는 항상 입력을 받는 것이 아닌, 특정 시간에만 받도록 했습니다.
 
 ![Fig 3. AnimNotify를 통해 버퍼 윈도우를 활성화/비활성화](./notify_0.png)
 
@@ -345,14 +347,14 @@ bool UGameplayInputQueueSystem::AddInputToBuffer(const FGameplayTag& InputTag)
     return true;
 }
 ```
-이 함수의 흐름은 명확합니다.
+
 1. 버퍼가 열려 있는지 확인
 2. 현재 허용된 태그인지 확인
 3. 설정 데이터에서 우선순위 / 유효시간 조회
 4. 현재 시각과 함께 버퍼 항목 생성
 5. 큐에 저장
 
-즉, 실행을 바로 시도하지 않고 먼저 입력 의도를 보존하게 됩니다.
+위와 같은 방식으로 실행을 바로 시도하지 않고 먼저 입력 의도를 보존하게 됩니다.
 
 ![Fig 5. 허용된 입력인지 확인](./allowed_0.gif)
 
@@ -393,7 +395,7 @@ void UGameplayInputQueueSystem::TickComponent(float DeltaTime, ELevelTick TickTy
     }
 }
 ```
-이 함수의 흐름은 다음과 같습니다.
+
 1. 버퍼가 켜져 있는지 확인
 2. ASC가 있는지 확인
 3. 큐가 비어 있는지 확인
@@ -402,7 +404,7 @@ void UGameplayInputQueueSystem::TickComponent(float DeltaTime, ELevelTick TickTy
 6. Ability 활성화 시도
 7. 성공 시 큐에서 제거 및 이벤트 브로드캐스트
 
-현재 입력 처리 방식은 `최근 입력 우선` 방식으로 **가장 마지막에 들어온 입력**을 먼저 확인하고 있습니다. 추후 코드를 수정하여 우선순위가 높은 입력 먼저, 우선순위가 같으면 더 최근 입력 먼저와 같은 방식을 선택할 수 있도록 변경 할 예정입니다.
+현재 입력 처리 방식은 `최근 입력 우선` 방식으로 **가장 마지막에 들어온 입력**을 먼저 확인하고 있습니다. 추후 코드를 수정하여 우선순위가 높은 입력 먼저, 우선순위가 같으면 더 최근 입력 먼저와 같은 방식을 선택할 수 있도록 변경할 예정입니다.
 
 ## 7. 만료된 입력 정리
 
@@ -422,7 +424,6 @@ void UGameplayInputQueueSystem::PurgeExpiredInputs()
 ```
 
 ## 8. GAS를 통한 Ability 활성화
-
 버퍼에 저장된 입력은 GAS를 통해 Ability를 실행합니다.
 ```cpp
 // GameplayInputQueueSystem.h
@@ -447,28 +448,27 @@ bool UGameplayInputQueueSystem::TryActivateBufferedAbility(const FBufferedInput&
     return false;
 }
 ```
-이 함수의 장점은 명확합니다.
 
 - 입력 큐는 Ability의 내부 구현을 몰라도 된다.
 - 입력 태그를 기준으로 활성화 가능한 Ability를 찾는다.
 - 찾은 Ability에 대해 GAS의 표준 흐름으로 실행을 시도한다.
 
-즉, 입력 계층과 Ability 계층이 태그 기반으로 느슨하게 연결됩니다.
+입력 계층과 Ability 계층이 태그 기반으로 느슨하게 연결됩니다.
 
 ## 9. 입력과 큐를 연결하기
 
 실제 입력과 시스템을 연결시켜야 합니다. 여기서는 PlayerController에서 실제 입력이 일어납니다. 그래서 먼저 컨트롤러에 `GameplayInputQueueSystem` 컴포넌트를 부착합니다.
 
-![Fig 6. GameplayInputQueueSystem 컴포넌트를 부착](./actor_comp_0.png)
+![Fig 6. 블루프린트에서 컴포넌트 생성](./actor_comp_0.png)
 
 ```cpp
 // ATPlayerController.cpp
+// C++에서 생성
 ATPlayerController::ATPlayerController()
 {
     InputQueueSystemComponent = CreateDefaultSubobject<UGameplayInputQueueSystem>(TEXT("InputQueueSystemComponent"));
 }
 ```
-
 또한 입력 소비 이벤트를 연결할 수 있습니다.
 ```cpp
 void ATPlayerController::BeginPlay()
@@ -602,9 +602,9 @@ if (!bBuffered && GetTASC())
 # 개선 할 점은 뭔가요?
 
 1. **우선순위 기반 처리**
-    - 지금은 가장 마지막 입력을 소비하고 있지만, 앞으로는 Priority, TimeStamp 기준으로 후보를 정렬할 수도 있습니다.
+    - InputQueue라는 이름과는 반대로 가장 마지막 입력을 소비하고 있지만, 앞으로는 Priority, TimeStamp 기준으로 후보를 정렬할 예정입니다.
 2. **중복 입력 정책**
-    - 같은 입력이 여러 번 들어왔을 때는 종복 허용, 같은 태그 하나만 유지, 최신 입력으로 갱신과 같은 정책을 통해 중복 입력 정책을 처리할 예정입니다.
+    - 같은 입력이 여러 번 들어왔을 때는 중복 허용, 같은 태그 하나만 유지, 최신 입력으로 갱신과 같은 정책을 통해 중복 입력 정책을 처리할 예정입니다.
 3. **Ability 매칭 캐싱**
     - 현재는 Ability 목록을 순회하며 태그를 찾습니다. 추후 Ability 수가 많아진다면, 캐싱 구조를 고려해볼 예정입니다.
 4. **디버깅 강화**
