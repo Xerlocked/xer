@@ -46,7 +46,7 @@ tags:
 현재는 총 6개의 주제로, 11편의 글 구성으로 생각하고 있습니다.
 
 - **Vol.1 - Chooser**
-    - 데이터 기반으로 분기를 처리하는 새로운 선택 시스템
+    - 데이터 기반으로 분기를 처리하는 새로운 선택 시스템 - [(보러가기)](../blog/next-unreal-001)
 - **Vol.2 - Pose History**
     - Motion Matching에서 과거 자세와 궤적을 기억하는 방식
 - **Vol.3 - Motion Matching + UAF**
