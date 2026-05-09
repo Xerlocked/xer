@@ -45,11 +45,11 @@ Chooser Table에는 세 가지 타입이 있습니다.
 
 ## Chooser Table 만들기
 
-Content Browser에서 우클릭 → `Animation` → `Chooser Table`을 선택한다.
+Content Browser에서 우클릭 → `Animation` → `Chooser Table`을 선택합니다.
 
 ![Fig 1. Chooser Table 생성 메뉴](asset_create_0.png)
 
-생성 다이얼로그에서 Chooser Type을 선택한다. AnimBP와 연동할 예정이라면 **Animation Chooser**를 고르고, 연결할 Anim Class를 지정한다.
+생성 다이얼로그에서 Chooser Type을 선택합니다. AnimBP와 연동할 예정이라 **Animation Chooser**를 고르고, 연결할 Anim Class를 지정합니다.
 
 ![Fig 2. Chooser Type 선택](asset_create_1.png)
 
@@ -61,9 +61,9 @@ Content Browser에서 우클릭 → `Animation` → `Chooser Table`을 선택한
 
 ## Chooser Table 구조 이해하기
 
-테이블을 열면 처음엔 Result 컬럼만 있다. 여기서 각 행에 반환할 Animation Asset(또는 다른 Chooser)을 추가합니다.
+테이블을 열면 처음엔 아무것도 없을텐데, 여기서 Result 항목 각 행에 반환할 Animation Asset(또는 다른 Chooser)을 추가합니다. (드래그&드롭)
 
-![Fig 4. 초기 Chooser Table - Result 열만 애니메이션 에셋으로 채워줬다](chooser_set_0.png)
+![Fig 4. 초기 Chooser Table - Result 열만 애니메이션 에셋으로 채워주세요](chooser_set_0.png)
 
 이제 조건 컬럼을 추가합니다. `+ Add Column`을 누르면 Evaluator 타입을 선택할 수 있습니다. 자주 쓰는 타입은 다음과 같습니다.
 
@@ -106,12 +106,13 @@ AnimGraph에서 State Machine 안의 State 하나를 열고, 노드 팔레트에
 
 Details 패널의 주요 항목은 다음과 같습니다.
 
-```
-Evaluation Frequency  : 얼마나 자주 평가할지 (On Become Relevant 권장)
-Chooser             : 연결할 Chooser Table
-Max Active Blends   : 동시에 블렌딩할 최대 애니메이션 수
-Store Blended Pose  : 블렌딩 결과를 캐싱할지 여부
-```
+| 항목 | 내용 |
+| --- | --- |
+|Evaluation Frequency | 얼마나 자주 평가할지 (On Become Relevant 권장) |
+| Chooser | 연결할 Chooser Table |
+| Max Active Blends | 동시에 블렌딩할 최대 애니메이션 수 |
+| Store Blended Pose | 블렌딩 결과를 캐싱할지 여부 |
+
 
 `Evaluation Frequency`를 `On Become Relevant`로 설정하면 State가 활성화될 때만 평가합니다. 매 틱마다 평가가 필요하다면 `Loop` 혹은 `Update`로 변경하시면 됩니다.
 
@@ -123,11 +124,11 @@ Store Blended Pose  : 블렌딩 결과를 캐싱할지 여부
 
 ## 추가: Generic Chooser
 
-ABP 없이 사용하는 경우엔 **Generic Chooser**를 쓴다. 이 경우 파라미터를 직접 정의해야 한다.
+애니메이션이 아닌 경우엔 **Generic Chooser**를 사용합니다. 이 경우 파라미터를 직접 정의해야 합니다.
 
 ![Fig 10. Generic Chooser Table 파라미터 설정](chooset_asset_0.png)
 
-파라미터 설정에서 `Class Parameter`와 `Struct Parameter`를 조합해 Input/Output 방향을 정의한다.
+파라미터 설정에서 `Class Parameter`와 `Struct Parameter`를 조합해 Input/Output 방향을 정의합니다.
 
 만약 C++에서 사용할 경우 다음과 같은 예시를 통해 사용하시면 됩니다. 그러나 Chooser는 BP에서 사용하는 것을 매우매우 추천드립니다.
 ```cpp
@@ -172,6 +173,7 @@ Direction, IsJump, State 값이 실시간으로 바뀌면서 Chooser가 적절�
 - AnimBP에서는 **Chooser Player 노드** 하나로 State 전체의 애니메이션 선택을 위임합니다.
 
 오늘은 간단하게 Chooser에 대해 다뤄봤습니다. 이 글을 적으면서 분량을 어떻게 해야할 지 막막했는데, 결국 대부분의 분량을 덜어내고, 아주 핵심부분만 알고 가자는 느낌으로 적어보았습니다.
+
 다음 글에서는 Motion Matching이 과거 자세와 궤적을 어떻게 기억하는지, **Pose History**를 다뤄보겠습니다.
 
 ---
