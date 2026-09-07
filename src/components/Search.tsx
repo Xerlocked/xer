@@ -13,7 +13,7 @@ export default function Search({ data }: Props) {
   const [results, setResults] = createSignal<CollectionEntry<"blog">[]>([])
 
   const fuse = new Fuse(data, {
-    keys: ["slug", "data.title", "data.summary", "data.tags"],
+    keys: ["id", "data.title", "data.summary", "data.tags"],
     includeMatches: true,
     minMatchCharLength: 2,
     threshold: 0.4,

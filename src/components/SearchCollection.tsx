@@ -23,7 +23,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
   const [currentPage, setCurrentPage] = createSignal(1);
 
   const fuse = new Fuse(coerced, {
-    keys: ["slug", "data.title", "data.summary", "data.tags"],
+    keys: ["id", "data.title", "data.summary", "data.tags"],
     includeMatches: true,
     minMatchCharLength: 2,
     threshold: 0.4,
