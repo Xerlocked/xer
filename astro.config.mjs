@@ -16,6 +16,12 @@ export default defineConfig({
   compressHTML: true,
   integrations: [mdx(), sitemap(), solidJs()],
   markdown: {
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+    },
     processor: unified({
       remarkPlugins: [remarkDirective, remarkAdmonitions, remarkGithub, remarkMath],
       rehypePlugins: [rehypeImageCaption, rehypeKatex],
