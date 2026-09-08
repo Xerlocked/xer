@@ -1,0 +1,25 @@
+---
+import type { MarkdownHeading } from "astro"
+import TableOfContentsList from "@components/TableOfContentsList.astro"
+
+type Props = {
+  headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+---
+
+{
+  headings.length > 0 && (
+    <nav aria-label="목차" class="mb-8 rounded-lg border border-black/15 dark:border-white/20 p-4 sm:p-5">
+      <details open>
+        <summary class="cursor-pointer rounded font-semibold text-black dark:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+          목차
+        </summary>
+        <div class="mt-3 text-sm leading-relaxed">
+          <TableOfContentsList headings={headings} />
+        </div>
+      </details>
+    </nav>
+  )
+}

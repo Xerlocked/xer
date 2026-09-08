@@ -1,0 +1,37 @@
+---
+import type { MarkdownHeading } from "astro"
+
+type Props = {
+  headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+const sections: { heading: MarkdownHeading; children: MarkdownHeading[] }[] = []
+
+for (const heading of headings) {
+  const section = sections[sections.length - 1]
+  if (section && heading.depth > section.heading.depth) {
+    section.children.push(heading)
+  } else {
+    sections.push({ heading, children: [] })
+  }
+}
+---
+
+<ul class="space-y-1">
+  {sections.map(({ heading, children }) => (
+    <li>
+      <a
+        href={`#${encodeURIComponent(heading.slug)}`}
+        class="block rounded py-1 [overflow-wrap:anywhere] hover:text-black dark:hover:text-white hover:underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {heading.text}
+      </a>
+      {children.length > 0 && (
+        <div class="ml-3 border-l border-black/15 dark:border-white/20 pl-3 sm:ml-4">
+          <Astro.self headings={children} />
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
