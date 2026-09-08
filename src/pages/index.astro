@@ -11,7 +11,7 @@ const posts = (await getCollection("blog"))
 ---
 
 <PageLayout title="홈" description={SITE.DESCRIPTION}>
-  <div class="relative bg-white dark:bg-black">
+  <div class="relative bg-background">
     <div class="mx-auto max-w-screen-sm p-5 space-y-10 pt-36 pb-8">
       <!-- About Section -->
       <section class="animate">
@@ -29,7 +29,7 @@ const posts = (await getCollection("blog"))
             <img
               src="/assets/img/profile.jpg"
               alt="Profile"
-              class="w-36 h-36 rounded-full object-cover border-2 border-gray-200 dark:border-gray-800"
+              class="w-36 h-36 rounded-md object-cover border-2 border-border"
             />
           </div>
         </div>
@@ -39,13 +39,13 @@ const posts = (await getCollection("blog"))
       <section class="animate">
         <div class="space-y-4">
           <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">최근 게시물</p>
+            <p class="font-semibold text-foreground">최근 게시물</p>
             <a
               href="/blog"
-              class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend"
+              class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-foreground underline-offset-2 blend"
             >
               <span
-                class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend"
+                class="text-muted-foreground group-hover:text-foreground blend"
               >
                 게시물 보기
               </span>

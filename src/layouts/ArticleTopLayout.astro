@@ -17,7 +17,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
 <div>
   <a
     href={`/${collection}`}
-    class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
+    class="ui-button group w-fit"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,27 +28,27 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
       stroke-width="2.5"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"
+      class="stroke-current group-hover:stroke-foreground"
     >
       <line
         x1="19"
         y1="12"
         x2="5"
         y2="12"
-        class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"
+        class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-transform duration-150"
       ></line>
       <polyline
         points="12 19 5 12 12 5"
-        class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"
+        class="translate-x-1 group-hover:translate-x-0 transition-transform duration-150"
       ></polyline>
     </svg>
     <div
-      class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out"
+      class="w-full group-hover:text-foreground transition-colors duration-150"
     >
       Back to {collection}
     </div>
   </a>
-  <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
+  <div class="flex flex-wrap text-sm text-muted-foreground mt-10 gap-4 tabular-nums">
     <div class="flex items-center gap-2">
       <svg class="size-5 stroke-current">
         <use href="/ui.svg#calendar"></use>
@@ -62,7 +62,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
       {readingTime(body ?? "")}
     </div>
   </div>
-  <h1 class="text-3xl font-semibold text-black dark:text-white mt-2">
+  <h1 class="text-3xl font-semibold text-foreground mt-2">
     {title}
   </h1>
   <div class="mt-1">
@@ -70,7 +70,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
   </div>
   {
     data.image && (
-      <div class="w-full mt-8 overflow-hidden rounded-xl border border-black/15 dark:border-white/20">
+      <div class="w-full mt-8 overflow-hidden rounded-xl border border-border">
         <img
           src={data.image.src}
           alt={title}
@@ -86,15 +86,15 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
           <a
             href={demoUrl}
             target="_blank"
-            class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend"
+            class="ui-button group"
           >
             <svg class="size-4">
               <use
                 href="/ui.svg#globe"
-                class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"
+                class="fill-current group-hover:fill-foreground blend"
               />
             </svg>
-            <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+            <span class="text-current group-hover:text-foreground blend">
               See Demo
             </span>
           </a>
@@ -103,15 +103,15 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
           <a
             href={repoUrl}
             target="_blank"
-            class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend"
+            class="ui-button group"
           >
             <svg class="size-4">
               <use
                 href="/ui.svg#link"
-                class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"
+                class="fill-current group-hover:fill-foreground blend"
               />
             </svg>
-            <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+            <span class="text-current group-hover:text-foreground blend">
               See Repository
             </span>
           </a>

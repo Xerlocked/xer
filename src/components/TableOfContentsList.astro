@@ -23,12 +23,12 @@ for (const heading of headings) {
     <li>
       <a
         href={`#${encodeURIComponent(heading.slug)}`}
-        class="block rounded py-1 [overflow-wrap:anywhere] hover:text-black dark:hover:text-white hover:underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="block rounded-sm py-1.5 [overflow-wrap:anywhere] text-muted-foreground hover:text-foreground hover:underline underline-offset-4"
       >
         {heading.text}
       </a>
       {children.length > 0 && (
-        <div class="ml-3 border-l border-black/15 dark:border-white/20 pl-3 sm:ml-4">
+        <div class="ml-3 border-l border-border pl-3 sm:ml-4">
           <Astro.self headings={children} />
         </div>
       )}

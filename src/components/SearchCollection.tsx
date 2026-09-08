@@ -105,16 +105,17 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
   return (
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
       {/* Control Panel*/}
-      <div class="col-span-3 sm:col-span-1">
+      <div class="min-w-0 col-span-1">
         <div class="sticky top-24 mt-7">
           {/* Search Bar */}
           <SearchBar onSearchInput={onSearchInput} query={query} setQuery={setQuery} placeholderText={`${entry_name} 검색`} />
           {/* Tag Filters */}
-          <div class="relative flex flex-row justify-between w-full"><p class="text-sm font-semibold uppercase my-4 text-black dark:text-white">Tags</p>
+          <div class="relative flex flex-row justify-between w-full"><p class="text-sm font-semibold uppercase my-4 text-foreground">Tags</p>
             {filter().size > 0 && (
               <button
                 onClick={clearFilters}
-                class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300"
+                aria-label="태그 필터 초기화"
+                class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-current hover:text-foreground"
               >
                 <svg class="size-5">
                   <use href={`/ui.svg#x`} />
@@ -127,20 +128,21 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                 <li class="sm:w-full">
                   <button
                     onClick={() => toggleTag(tag)}
+                    aria-pressed={filter().has(tag)}
                     class={cn(
-                      "w-full px-2 py-1 rounded",
+                      "w-full min-h-9 px-2.5 py-2 rounded-md text-sm border",
                       "flex gap-2 items-center",
-                      "bg-black/5 dark:bg-white/10",
-                      "hover:bg-black/10 hover:dark:bg-white/15",
-                      "transition-colors duration-300 ease-in-out",
-                      filter().has(tag) && "text-black dark:text-white"
+                      "transition-colors duration-150",
+                      filter().has(tag)
+                        ? "bg-accent border-border text-foreground font-semibold"
+                        : "bg-transparent border-transparent text-muted-foreground hover:bg-muted"
                     )}
                   >
                     <svg
                       class={cn(
-                        "shrink-0 size-5 fill-black/50 dark:fill-white/50",
-                        "transition-colors duration-300 ease-in-out",
-                        filter().has(tag) && "fill-black dark:fill-white"
+                        "shrink-0 size-5 fill-muted-foreground",
+                        "transition-colors duration-150",
+                        filter().has(tag) && "fill-foreground"
                       )}
                     >
                       <use
@@ -165,14 +167,14 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
         </div>
       </div>
       {/* Posts */}
-      <div class="col-span-3 sm:col-span-2">
+      <div class="min-w-0 col-span-1 sm:col-span-2">
         <div class="flex flex-col">
           {/* Info Bar */}
-          <div id="post-list-top" class='flex justify-between flex-row mb-2'>
-            <div class="text-sm uppercase">
+          <div id="post-list-top" class='flex flex-wrap items-center justify-between gap-2 mb-4 scroll-mt-24'>
+            <div class="text-xs tabular-nums">
               전체 {data.length}개 | 선택됨 {collection().length}개
             </div>
-            <button onClick={toggleDescending} class='flex flex-row gap-1 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300 text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 hover:dark:text-neutral-300'>
+            <button onClick={toggleDescending} class='ui-button stroke-current'>
               <div class="text-sm uppercase">
                 {descending() ? "내림차순" : "오름차순"}
               </div>
@@ -194,7 +196,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
 
           {/* Pagination */}
           <Show when={totalPages() > 1}>
-            <nav class="flex items-center justify-center gap-1 mt-6">
+            <nav aria-label="페이지 이동" class="flex flex-wrap items-center justify-center gap-1 mt-6">
               {/* Previous */}
               <button
                 onClick={() => goToPage(Math.max(1, currentPage() - 1))}
@@ -203,8 +205,8 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                   "p-2 rounded-lg transition-colors duration-200",
                   "stroke-current",
                   currentPage() === 1
-                    ? "text-neutral-300 dark:text-neutral-600 cursor-not-allowed"
-                    : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                    ? "text-muted-foreground cursor-not-allowed"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 )}
                 aria-label="이전 페이지"
               >
@@ -217,15 +219,16 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
               <For each={pageNumbers()}>
                 {(page) =>
                   page === "..." ? (
-                    <span class="px-2 text-neutral-400 dark:text-neutral-500 select-none">…</span>
+                    <span class="px-2 text-muted-foreground select-none">…</span>
                   ) : (
                     <button
                       onClick={() => goToPage(page as number)}
+                      aria-current={currentPage() === page ? "page" : undefined}
                       class={cn(
                         "min-w-[2.25rem] h-9 px-2 rounded-lg text-sm font-medium transition-colors duration-200",
                         currentPage() === page
-                          ? "bg-black/10 dark:bg-white/15 text-black dark:text-white"
-                          : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground"
                       )}
                     >
                       {page}
@@ -242,8 +245,8 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                   "p-2 rounded-lg transition-colors duration-200",
                   "stroke-current",
                   currentPage() === totalPages()
-                    ? "text-neutral-300 dark:text-neutral-600 cursor-not-allowed"
-                    : "text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:dark:bg-white/10 hover:text-black hover:dark:text-white"
+                    ? "text-muted-foreground cursor-not-allowed"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 )}
                 aria-label="다음 페이지"
               >

@@ -1,0 +1,33 @@
+/* Hallmark · tone: modern-minimal · theme: shadcn neutral · existing layout preserved */
+/* Pre-emit critique: philosophy 4 · hierarchy 4 · execution 4 · specificity 4 · restraint 5 · consistency 5 */
+:root {
+  --background: 1 0 0;
+  --foreground: 0.205 0 0;
+  --card: 1 0 0;
+  --primary: 0.205 0 0;
+  --primary-foreground: 0.985 0 0;
+  --muted: 0.97 0 0;
+  --muted-foreground: 0.50 0 0;
+  --accent: 0.955 0 0;
+  --accent-foreground: 0.205 0 0;
+  --border: 0.90 0 0;
+  --input: 0.75 0 0;
+  --ring: 0.55 0 0;
+  --radius: 0.625rem;
+  --font-body: "Pretendard", sans-serif;
+}
+
+html.dark {
+  --background: 0.145 0 0;
+  --foreground: 0.985 0 0;
+  --card: 0.18 0 0;
+  --primary: 0.922 0 0;
+  --primary-foreground: 0.205 0 0;
+  --muted: 0.23 0 0;
+  --muted-foreground: 0.72 0 0;
+  --accent: 0.269 0 0;
+  --accent-foreground: 0.985 0 0;
+  --border: 0.30 0 0;
+  --input: 0.45 0 0;
+  --ring: 0.60 0 0;
+}

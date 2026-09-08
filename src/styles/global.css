@@ -1,3 +1,5 @@
+@import "./tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -230,4 +232,140 @@ article img {
 }
 .admonition.caution .admonition-title {
   @apply text-red-800 dark:text-red-300;
+}
+
+/* Shared shadcn-inspired surfaces; content plugin styles remain independent. */
+html,
+html.dark,
+body,
+main,
+html.dark body,
+html.dark main {
+  @apply bg-background text-foreground;
+}
+
+html,
+body {
+  overflow-x: clip;
+  font-family: var(--font-body);
+}
+
+body,
+html.dark body {
+  @apply text-muted-foreground;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  letter-spacing: -0.025em;
+}
+
+header:not(.scrolled),
+header.scrolled,
+html.dark header:not(.scrolled),
+html.dark header.scrolled {
+  @apply bg-background/95 border-border;
+  transition: none;
+}
+
+:is(a, button, input, summary):focus-visible {
+  outline: 2px solid oklch(var(--ring));
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@layer components {
+  .ui-button {
+    @apply inline-flex min-h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground shadow-sm;
+  }
+
+  .ui-button:hover {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  .ui-button:active {
+    @apply bg-muted;
+  }
+
+  .ui-icon-button {
+    @apply items-center justify-center rounded-md border border-border bg-background p-2 text-muted-foreground;
+  }
+
+  .ui-icon-button:hover {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  .ui-card {
+    @apply rounded-lg border border-border bg-card text-muted-foreground shadow-sm;
+  }
+
+  .ui-card:hover {
+    @apply border-ring/50;
+  }
+
+  .ui-badge {
+    @apply inline-flex items-center rounded-md border border-border bg-muted px-2 py-0.5 text-xs font-medium text-foreground;
+  }
+
+  .ui-input {
+    @apply h-10 w-full rounded-md border border-input bg-background px-10 text-sm text-foreground shadow-sm placeholder:text-muted-foreground;
+  }
+}
+
+article,
+html.dark article {
+  --tw-prose-body: oklch(var(--foreground) / 0.85);
+  --tw-prose-headings: oklch(var(--foreground));
+  --tw-prose-bold: oklch(var(--foreground));
+  --tw-prose-links: oklch(var(--foreground));
+  --tw-prose-quotes: oklch(var(--foreground));
+  --tw-prose-quote-borders: oklch(var(--border));
+  --tw-prose-hr: oklch(var(--border));
+  --tw-prose-th-borders: oklch(var(--border));
+  --tw-prose-td-borders: oklch(var(--border));
+  line-height: 1.85;
+}
+
+article :is(h1, h2) {
+  @apply border-b border-border pb-3;
+}
+
+article :not(pre) > code,
+html.dark article :not(pre) > code {
+  @apply rounded-sm bg-muted text-foreground;
+}
+
+.animate,
+.animate.show {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.blend {
+  transition-property: color, background-color, border-color, fill, stroke;
+  transition-duration: 150ms;
+}
+
+@media (pointer: coarse) {
+  .ui-button, .ui-icon-button, .ui-input {
+    min-height: 44px;
+  }
+
+  .ui-icon-button {
+    min-width: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
