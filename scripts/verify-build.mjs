@@ -46,5 +46,13 @@ assert.match(read("robots.txt"), /Sitemap: https:\/\/xerlocked\.com\/sitemap-ind
 for (const page of ["blog", "projects", "search"]) {
   assert.match(read(`${page}/index.html`), /<astro-island\b[^>]*client="load"/, `${page}: search island missing`)
 }
-assert.doesNotMatch(read("index.html"), /<astro-island\b/, "Home should remain static")
-console.log(`Verified ${count} article URLs, canonical/RSS/sitemap links, local assets, Markdown plugins, and search island output.`)
+const home = read("index.html")
+const homeIslands = [...home.matchAll(/<astro-island\b[^>]*>/g)]
+assert.equal(homeIslands.length, 1, "Only the home game should hydrate")
+assert.match(homeIslands[0][0], /component-url="[^"]*ChaseGame[^\"]*"/, "Home game island missing")
+assert.match(homeIslands[0][0], /client="visible"/, "Game should hydrate when visible")
+assert.match(home, /<noscript>/, "Game must provide a no-JavaScript fallback")
+assert.match(home, /href="\/blog"/, "Blog must be accessible without playing")
+assert.match(home, /href="\/projects"/, "Projects must be accessible without playing")
+assert.match(home, /<h1\b[^>]*id="landing-title"/, "Home introduction must be server-rendered")
+console.log(`Verified ${count} article URLs, canonical/RSS/sitemap links, local assets, Markdown plugins, search islands, and the home game fallback.`)

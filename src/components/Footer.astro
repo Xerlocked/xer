@@ -1,11 +1,12 @@
 ---
 import { SITE, SOCIALS } from "@consts"
 import Container from "@components/Container.astro"
+const showBackToTop = Astro.url.pathname !== "/"
 ---
 
 <footer class="relative bg-background">
   <div class="animate">
-    <section class="py-5">
+    {showBackToTop && <section class="py-5">
       <Container size="md">
         <div class="flex items-center justify-center sm:justify-end">
           <button id="back-to-top" aria-label="Back to top of page" class="ui-button group w-fit">
@@ -19,7 +20,7 @@ import Container from "@components/Container.astro"
           </button>
         </div>
       </Container>
-    </section>
+    </section>}
   
     <section class=" py-5 overflow-hidden whitespace-nowrap border-t border-border">
       <Container size="md">
