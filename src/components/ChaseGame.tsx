@@ -23,6 +23,7 @@ export default function ChaseGame(props: Props) {
   let previousId: string | undefined
   let disposed = false
   const [ready, setReady] = createSignal(false)
+  const [gameInput, setGameInput] = createSignal(false)
   const [status, setStatus] = createSignal<Status>("ready")
   const [elapsed, setElapsed] = createSignal(0)
   const [file, setFile] = createSignal<CaseFile>()
@@ -85,6 +86,7 @@ export default function ChaseGame(props: Props) {
     stopFrame()
     // Move focus before removing the start/result button to avoid a false focus-loss pause.
     stage.focus({ preventScroll: true })
+    setGameInput(true)
     const bounds = stage.getBoundingClientRect()
     if (bounds.top < 72 || bounds.bottom > window.innerHeight - 64) {
       stage.scrollIntoView({ block: "center", behavior: "instant" })
@@ -113,6 +115,10 @@ export default function ChaseGame(props: Props) {
   }
 
   function handleKey(event: KeyboardEvent) {
+    if (event.key === "Tab") setGameInput(false)
+    if (event.target === stage && (event.code.startsWith("Arrow") || event.code === "Space")) {
+      setGameInput(true)
+    }
     if (event.key === "Escape" && isResult()) {
       event.preventDefault()
       closeJournal()
@@ -194,9 +200,12 @@ export default function ChaseGame(props: Props) {
         </span>
       </div>
       <div class="chase-stage" ref={stage} tabIndex={0} role="group" aria-label="게임 영역" aria-describedby="chase-instructions"
+        data-game-input={gameInput()}
+        onBlur={() => setGameInput(false)}
         onClick={(event) => {
           if (event.target === canvas && status() === "running") {
             stage.focus({ preventScroll: true })
+            setGameInput(true)
             leap()
           }
         }}>
@@ -232,7 +241,7 @@ export default function ChaseGame(props: Props) {
         </Show>
         <Show when={isResult()}>
           <div class="chase-overlay">
-            <div class="chase-report chase-journal" role="region" aria-labelledby="chase-journal-title">
+            <div class="chase-report chase-journal" role="region" aria-labelledby="chase-journal-title" onDragStart={(event) => event.preventDefault()}>
               <div class="chase-journal-header">
                 <span>수사 일지 <span class="chase-journal-number">/ 001</span></span>
                 <button class="chase-journal-close" onClick={closeJournal} aria-label="일지 닫기" title="일지 닫기">

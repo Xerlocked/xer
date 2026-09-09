@@ -17,6 +17,10 @@
 .chase-clock span { color: var(--chase-muted); }
 .chase-stage { position: relative; height: clamp(400px, 55svh, 520px); isolation: isolate; }
 .chase-stage:focus-visible { outline: 2px solid var(--chase-gold); outline-offset: -5px; }
+.chase-stage[data-game-input="true"]:focus-visible { outline: none; }
+@media (forced-colors: active) {
+  .chase-stage[data-game-input="true"]:focus-visible { outline: 2px solid Highlight; }
+}
 .chase-canvas, .chase-poster { position: absolute; inset: 0; width: 100%; height: 100%; }
 .chase-canvas { opacity: 0; touch-action: manipulation; }
 .chase-canvas-ready { opacity: 1; }
@@ -50,6 +54,8 @@
 .chase-file-summary { font-size: 12px; color: var(--chase-muted); line-height: 1.7; margin-top: 7px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .chase-file .chase-button { width: 100%; margin-top: 14px; }
 .chase-journal {
+  -webkit-user-select: none;
+  user-select: none;
   --chase-paper: #f4efdf;
   --chase-ink: #39362f;
   --chase-muted: #706957;
@@ -64,6 +70,8 @@
   background-image: repeating-linear-gradient(transparent 0 27px, #9c886210 27px 28px);
   box-shadow: 3px 3px 0 #ddd3bb, 0 14px 40px #00000026;
 }
+.chase-journal:focus-visible,
+.chase .chase-journal h2:focus-visible { outline: none; }
 html.dark .chase-journal {
   --chase-paper: #292821;
   --chase-ink: #ede5d2;
