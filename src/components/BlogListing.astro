@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import SearchCollection from "@components/SearchCollection";
+import { BLOG } from "@consts";
+
+interface Props {
+  category?: string;
+}
+const { category } = Astro.props;
+const allPosts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const categories = [...new Set(allPosts.map((post) => post.data.Category))]
+  .sort((a, b) => a.localeCompare(b, "ko"));
+const posts = category === undefined ? allPosts : allPosts.filter((post) => post.data.Category === category);
+const title = category === undefined ? BLOG.TITLE : `${category} · ${BLOG.TITLE}`;
+const description = category === undefined ? BLOG.DESCRIPTION : `${category} 카테고리의 글 ${posts.length}개를 모았습니다.`;
+const displayCount = Math.min(posts.length, 10);
+const estimatedInitialSize = 28 + displayCount * 158 + Math.max(0, displayCount - 1) * 12;
+---
+
+<PageLayout title={title} description={description}>
+  <TopLayout>
+    <div class="animate">
+      <h1 class="text-3xl font-semibold text-foreground mt-2">{title}</h1>
+      <div class="mt-1">{description}</div>
+    </div>
+  </TopLayout>
+  <BottomLayout>
+    <div id="search-collection-wrapper" class="animate" style={{ minHeight: `${estimatedInitialSize}px` }}>
+      <SearchCollection client:load entry_name="게시물" tags={[]} data={posts} categories={categories} selectedCategory={category} />
+    </div>
+  </BottomLayout>
+</PageLayout>

@@ -3,6 +3,7 @@ title: "알고(Algo) 풀자: 시간복잡도"
 summary: "알고리즘 : 시간복잡도"
 date: "Aug 27 2025"
 draft: false
+Category: "개발"
 tags:
 - Algorithm
 ---

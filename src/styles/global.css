@@ -97,18 +97,6 @@ article {
   }
 }
 
-/** styles for public /animation.js */
-.animate {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-
-.animate.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 article img {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -351,11 +339,44 @@ html.dark article :not(pre) > code {
   @apply rounded-sm bg-muted text-foreground;
 }
 
+/* Content stays readable before scripts load and when JavaScript is disabled. */
+@keyframes content-enter {
+  from { opacity: 0; translate: 0 16px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
 .animate,
-.animate.show {
-  opacity: 1;
-  transform: none;
-  transition: none;
+.landing {
+  animation: content-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ui-card {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.ui-button,
+.ui-icon-button,
+.chase-button {
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+:is(.ui-button, .ui-icon-button, .chase-button):active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px oklch(var(--foreground) / 0.08);
+  }
+
+  :is(.ui-button, .ui-icon-button, .chase-button):hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+.ui-card:focus-visible {
+  transform: translateY(-3px);
 }
 
 .blend {
@@ -374,6 +395,13 @@ html.dark article :not(pre) > code {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ui-card,
+  .ui-button,
+  .ui-icon-button,
+  .chase-button {
+    transform: none !important;
+  }
+
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;

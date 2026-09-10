@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+import BlogListing from "@components/BlogListing.astro";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog")).filter((post) => !post.data.draft);
+  return [...new Set(posts.map((post) => post.data.Category))].map((category) => ({
+    params: { category },
+    props: { category },
+  }));
+}
+interface Props { category: string }
+const { category } = Astro.props;
+---
+
+<BlogListing category={category} />

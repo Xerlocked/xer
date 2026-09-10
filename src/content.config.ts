@@ -19,6 +19,7 @@ const blog = defineCollection({
     summary: z.string(),
     date: z.coerce.date(),
     tags: z.array(z.string()),
+    Category: z.string().trim().min(1).default("미분류"),
     draft: z.boolean().optional(),
     image: image().optional(),
   }),

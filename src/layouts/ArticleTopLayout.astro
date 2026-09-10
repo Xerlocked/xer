@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { formatDate, readingTime } from "@lib/utils";
+import { categoryHref } from "@lib/categories";
 
 type Props = {
   entry: CollectionEntry<"projects"> | CollectionEntry<"blog">;
@@ -49,6 +50,9 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
     </div>
   </a>
   <div class="flex flex-wrap text-sm text-muted-foreground mt-10 gap-4 tabular-nums">
+    {entry.collection === "blog" && (
+      <a href={categoryHref(entry.data.Category)} class="ui-badge hover:bg-accent" aria-label={`${entry.data.Category} 카테고리 글 보기`}>{entry.data.Category}</a>
+    )}
     <div class="flex items-center gap-2">
       <svg class="size-5 stroke-current">
         <use href="/ui.svg#calendar"></use>

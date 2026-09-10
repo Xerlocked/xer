@@ -3,19 +3,13 @@ import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
-import SearchCollection from "@components/SearchCollection";
+import ArrowCard from "@components/ArrowCard";
 import { PROJECTS } from "@consts";
 
 const projects = (await getCollection("projects"))
   .filter((project) => !project.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [
-  ...new Set(projects.flatMap((project) => project.data.tags)),
-].sort((a, b) => a.localeCompare(b));
-
-const estimated_initial_size =
-  28 + projects.length * 158 + (projects.length - 1) * 12;
 ---
 
 <PageLayout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
@@ -30,17 +24,18 @@ const estimated_initial_size =
     </div>
   </TopLayout>
   <BottomLayout>
-    <div
-      id="search-collection-wrapper"
-      class="animate"
-      style={{ minHeight: `${estimated_initial_size}px` }}
-    >
-      <SearchCollection
-        client:load
-        entry_name={"projects"}
-        tags={tags}
-        data={projects}
-      />
-    </div>
+    <ul class="project-grid animate grid grid-cols-1 gap-4" aria-label="프로젝트 목록">
+      {projects.map((project) => (
+        <li class="min-w-0">
+          <ArrowCard entry={project} />
+        </li>
+      ))}
+    </ul>
   </BottomLayout>
 </PageLayout>
+
+<style>
+  .project-grid :global(.ui-card) {
+    height: 100%;
+  }
+</style>

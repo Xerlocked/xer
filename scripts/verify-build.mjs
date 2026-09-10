@@ -43,9 +43,11 @@ assert.match(math, /<github-card\b[^>]*data-repo="Xerlocked\/LightSwitchPlugin"/
 assert.match(math, /class="admonition note"/, "Admonitions must render")
 assert.match(math, /<figcaption\b/, "Image captions must render")
 assert.match(read("robots.txt"), /Sitemap: https:\/\/xerlocked\.com\/sitemap-index\.xml/)
-for (const page of ["blog", "projects", "search"]) {
+for (const page of ["blog", "search"]) {
   assert.match(read(`${page}/index.html`), /<astro-island\b[^>]*client="load"/, `${page}: search island missing`)
 }
+assert.match(read("projects/index.html"), /class="project-grid[^\"]*grid-cols-1/, "Projects must render a single-column card list")
+assert.doesNotMatch(read("projects/index.html"), /<astro-island\b/, "Projects should render without a search island")
 const home = read("index.html")
 const homeIslands = [...home.matchAll(/<astro-island\b[^>]*>/g)]
 assert.equal(homeIslands.length, 1, "Only the home game should hydrate")

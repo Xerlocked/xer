@@ -4,6 +4,7 @@ import Fuse from "fuse.js"
 import ArrowCard from "@components/ArrowCard"
 import { cn } from "@lib/utils"
 import SearchBar from "@components/SearchBar"
+import { categoryHref } from "@lib/categories"
 
 const POSTS_PER_PAGE = 10;
 
@@ -11,14 +12,16 @@ type Props = {
   entry_name: string
   tags: string[]
   data: CollectionEntry<"blog">[] | CollectionEntry<'projects'>[]
+  categories?: string[]
+  selectedCategory?: string
 }
 
-export default function SearchCollection({ entry_name, data, tags }: Props) {
+export default function SearchCollection({ entry_name, data, tags, categories, selectedCategory }: Props) {
   const coerced = data.map((entry) => entry as CollectionEntry<'blog'>);
 
   const [query, setQuery] = createSignal("");
   const [filter, setFilter] = createSignal(new Set<string>())
-  const [collection, setCollection] = createSignal<CollectionEntry<'blog'>[]>([])
+  const [collection, setCollection] = createSignal<CollectionEntry<'blog'>[]>(coerced)
   const [descending, setDescending] = createSignal(false);
   const [currentPage, setCurrentPage] = createSignal(1);
 
@@ -109,6 +112,20 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
         <div class="sticky top-24 mt-7">
           {/* Search Bar */}
           <SearchBar onSearchInput={onSearchInput} query={query} setQuery={setQuery} placeholderText={`${entry_name} 검색`} />
+          <Show when={categories}>
+            {(items) => (
+              <nav aria-label="블로그 카테고리">
+                <p class="text-sm font-semibold my-4 text-foreground">카테고리</p>
+                <ul class="flex flex-wrap sm:flex-col gap-1.5">
+                  <li><a href="/blog" aria-current={!selectedCategory ? "page" : undefined} class={cn("flex min-h-11 items-center rounded-md px-2.5 py-2 text-sm", !selectedCategory ? "bg-accent text-foreground font-semibold" : "hover:bg-muted")}>전체 글</a></li>
+                  <For each={items()}>{(category) => (
+                    <li><a href={categoryHref(category)} aria-current={selectedCategory === category ? "page" : undefined} class={cn("flex min-h-11 items-center rounded-md px-2.5 py-2 text-sm break-words", selectedCategory === category ? "bg-accent text-foreground font-semibold" : "hover:bg-muted")}>{category}</a></li>
+                  )}</For>
+                </ul>
+              </nav>
+            )}
+          </Show>
+          <Show when={!categories}>
           {/* Tag Filters */}
           <div class="relative flex flex-row justify-between w-full"><p class="text-sm font-semibold uppercase my-4 text-foreground">Tags</p>
             {filter().size > 0 && (
@@ -164,6 +181,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
               )}
             </For>
           </ul>
+          </Show>
         </div>
       </div>
       {/* Posts */}
