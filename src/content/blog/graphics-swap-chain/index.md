@@ -3,8 +3,10 @@ title: "D3D11 - CreateDeviceAndSwapChain 오류 해결"
 summary: "CreateDeviceAndSwapChain 함수의 실패의 원인을 찾고 해결하기"
 date: "Jan 16 2025"
 draft: false
+Category: "그래픽스"
 tags:
-- Graphics
+    - Graphics
+    - Debugging
 ---
 
 # 목표
@@ -29,7 +31,7 @@ DirectX11의 CreateDeviceAndSwapChain 함수의 실패의 원인을 찾고 해�
 
 # 해결
 
-결과적으로 윈도우의 __그래픽 도구__ 를 활성화 시켜야 합니다.
+결과적으로 윈도우의 **그래픽 도구** 를 활성화 시켜야 합니다.
 
 다음은 윈도우10 & 윈도우11 에서 그래픽 도구를 활성화 하는 방법입니다.
 
@@ -38,13 +40,13 @@ DirectX11의 CreateDeviceAndSwapChain 함수의 실패의 원인을 찾고 해�
 2. 시스템 탭 이동
 
 3. 선택적 기능 선택
-![사진](./d3d_2.png)
+   ![사진](./d3d_2.png)
 
 4. 선택적 기능 추가 및 그래픽 도구 검색
 
 5. 그래픽 도구 추가
-![사진](./d3d_3.png)
+   ![사진](./d3d_3.png)
 
-> 설치 시 `0x80070005` 오류가 발생한다면 __Windows 업데이트 기능을 활성화__ 해주셔야 합니다.
+> 설치 시 `0x80070005` 오류가 발생한다면 **Windows 업데이트 기능을 활성화** 해주셔야 합니다.
 >
 > 알 수 없는 오류가 발생되었다고 하면 그냥 다시 한 번 진행하시면 됩니다.

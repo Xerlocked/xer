@@ -3,6 +3,7 @@ title: "What is Machine Learning"
 summary: "머신러닝이 무엇인지에 대해 알아봅니다."
 date: "Sep 2 2026"
 draft: true
+Category: AI
 tags:
     - ML
     - AI

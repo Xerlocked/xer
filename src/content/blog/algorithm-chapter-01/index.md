@@ -3,10 +3,11 @@ title: "알고(Algo) 풀자: 시간복잡도"
 summary: "알고리즘 : 시간복잡도"
 date: "Aug 27 2025"
 draft: false
-Category: "개발"
+Category: "알고리즘"
 tags:
-- Algorithm
+    - Algorithm
 ---
+
 # 들어가며
 
 이 게시글을 시작으로 "알고리즘 풀자" 시리즈 (이하 알고풀자)를 적어보자 합니다.
@@ -23,9 +24,9 @@ tags:
 
 알고리즘은 어떠한 문제가 주어졌을 때, 그 문제를 해결하는 일련의 과정을 의미합니다.
 
-예를 들어, 
+예를 들어,
 
-> 민수는 여자친구와의 데이트 약속에 늦어서 최대한 빨리 약속 장소에 도착해야 합니다. 
+> 민수는 여자친구와의 데이트 약속에 늦어서 최대한 빨리 약속 장소에 도착해야 합니다.
 >
 > 다음 3가지 방법으로 이동해야 합니다.
 >
@@ -88,7 +89,7 @@ tags:
 
 ## 시간 복잡도 계산
 
-제가 알고리즘에 대해 공부하면서 가장 신기했던게 __'이건 로그N 만큼 걸리네'__ , __'이건 N만큼 걸리겠어'__ 를 코드만 보고 바로 판단하는 부분이었습니다. 
+제가 알고리즘에 대해 공부하면서 가장 신기했던게 **'이건 로그N 만큼 걸리네'** , **'이건 N만큼 걸리겠어'** 를 코드만 보고 바로 판단하는 부분이었습니다.
 
 그래서 그 부분에 대해서 조금 팁을 드리고자 합니다. 물론 정확한건 계산을 해야되겠지만, 어느정도 유추할 수 있는 방법입니다.
 
@@ -98,7 +99,7 @@ tags:
 
 상수 시간은 매우 쉬운 편입니다. 반복적으로 계산이 이루어지는 부분이 없다고 보시면 됩니다.
 
-__대표적인 예제:__
+**대표적인 예제:**
 
 ```cpp
 int Sum(int a, int b)
@@ -114,7 +115,7 @@ int Sum(int a, int b)
 
 선형 시간은 범위가 주어지고 그 범위를 한 번만 순회해서 결과를 출력하는 방식입니다.
 
-__대표적인 예제:__
+**대표적인 예제:**
 
 ```cpp
 
@@ -134,7 +135,7 @@ int Solution(vector<int> Arr)
 
 로그 시간은 순회마다 범위가 절반으로 줄어드는 방식입니다.
 
-__대표적인 예제:__
+**대표적인 예제:**
 
 ```cpp
 bool BinarySearch(const vector<int>& arr, int target)
@@ -147,11 +148,11 @@ bool BinarySearch(const vector<int>& arr, int target)
         if (arr[mid] == target) {
             return true;
         }
-        
+
         // 중간값이 타겟보다 작으면, 왼쪽 절반을 버린다.
         if (arr[mid] < target) {
             left = mid + 1;
-        } 
+        }
         // 중간값이 타겟보다 크면, 오른쪽 절반을 버린다.
         else {
             right = mid - 1;
@@ -183,12 +184,12 @@ void Sort(vector<int>& arr)
 
 핵심 아이디어: 입력 N개에 대해 각각의 요소가 두 가지(혹은 그 이상) 선택지를 가지고 있고, 가능한 모든 조합을 탐색하는 알고리즘
 
-지수 시간은 N개의 재료가 있을 때, 만들 수 있는 모든 피자 조합을 구하는 것과 같습니다. 각 재료마다 '넣는다' 또는 '안넣는다' 2가지 선택지가 있죠. 재료가 N개면 총 2 x  2 x ... x 2 (N번) 2^N 가지 조합이 나옵니다.
+지수 시간은 N개의 재료가 있을 때, 만들 수 있는 모든 피자 조합을 구하는 것과 같습니다. 각 재료마다 '넣는다' 또는 '안넣는다' 2가지 선택지가 있죠. 재료가 N개면 총 2 x 2 x ... x 2 (N번) 2^N 가지 조합이 나옵니다.
 
 ```cpp
 // 집합의 모든 부분집합을 구하는 재귀 함수
 // n개의 원소가 있을 때, 각 원소를 포함하거나/포함하지 않거나 2가지 선택이 존재합니다.
-void generateSubsets(int k, int n, vector<int>& current_subset) 
+void generateSubsets(int k, int n, vector<int>& current_subset)
 {
     if (k == n) {
         // 하나의 부분집합 완성
@@ -213,7 +214,7 @@ void generateSubsets(int k, int n, vector<int>& current_subset)
 
 ```cpp
 // 인접 리스트로 그래프가 주어졌을 때의 BFS
-void bfs(int start_node, int V, const vector<vector<int>>& adj) 
+void bfs(int start_node, int V, const vector<vector<int>>& adj)
 {
     vector<bool> visited(V + 1, false);
     queue<int> q;
@@ -237,8 +238,6 @@ void bfs(int start_node, int V, const vector<vector<int>>& adj)
     }
 }
 ```
-
----
 
 # 마무리
 

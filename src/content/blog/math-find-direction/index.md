@@ -3,11 +3,14 @@ title: "두 벡터를 이용한 캐릭터의 진행 방향 알아보기"
 summary: "언리얼 엔진으로 알아보는 벡터"
 date: "Jan 02 2025"
 draft: false
+Category: "개발"
 tags:
-- Math
+    - Math
+    - Vector
 ---
 
 # 구현 목표
+
 벡터의 내적과 외적을 이용해서 캐릭터의 진행 방향 알아보기
 
 # 구현 과정
@@ -35,11 +38,12 @@ tags:
 여기서 중요하게 봐야하는 것은 `VelocityVector`입니다. 캐릭터가 어느 쪽으로 힘(속도)를 내고 있는지 알려주고 있어요. 설정 값에 따라 달라지겠지만 지금은 기본 속도인 600으로 움직이네요.
 
 그러면 이러한 의문이 들 수 있습니다.
+
 > _진행방향은 VelocityVector만 구하면 되는거 아닌가요?_
 
 맞습니다. 물리에서 벡터는 방향을 가진 스칼라 값이죠. 하지만 우리는 애니메이션을 사용합니다. 그러면 애니메이션을 볼까요?
 
-언리얼 애니메이션 블랜드 스페이스는 float의 입력값을 가지고  상태를 변경합니다. 그래서 위의 Vector형태로는 입력할 수 없어요.
+언리얼 애니메이션 블랜드 스페이스는 float의 입력값을 가지고 상태를 변경합니다. 그래서 위의 Vector형태로는 입력할 수 없어요.
 
 그래서 이를 `실수값`으로 바꿔주는 겁니다.
 
@@ -97,7 +101,8 @@ $$\mathbf{A} \cdot \mathbf{B} = \Vert\mathbf{A}\Vert \Vert\mathbf{B}\Vert \cos(\
 언리얼에서는 이 기능 역시 제공합니다. FMath의 `Sign` 함수인데요. 이 함수를 사용하면 해당 값의 부호를 가져올 수 있습니다.
 
 다음은 위 과정을 언리얼 코드로 변환한 것입니다.
-``` cpp
+
+```cpp
 float AHeroCharacter::GetMovementDirection() const
 {
     if(GetVelocity().IsZero()) return 0.0f;
@@ -106,7 +111,7 @@ float AHeroCharacter::GetMovementDirection() const
     const auto VelocityNormal = GetVelocity().GetSafeNormal();
 
     // 아크 코사인을 통해 두 벡터 사이의 각도 구하기
-    const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal)); 
+    const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
 
     // 외적을 통한 부호 가져오기
     const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
@@ -115,8 +120,6 @@ float AHeroCharacter::GetMovementDirection() const
     return FMath::RadiansToDegrees(AngleBetween) * FMath::Sign(CrossProduct.Z);
 }
 ```
-
----
 
 # 마무리
 

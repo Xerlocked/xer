@@ -3,8 +3,10 @@ title: "Circular Reference Problem"
 summary: "shared pointer 사용시 발생하는 순환 참조 문제에 대해 알아봅니다."
 date: "Dec 10 2025"
 draft: false
+Category: "개발"
 tags:
-- Dev
+    - SmartPointer
+    - Circular
 ---
 
 # 들어가며
@@ -16,6 +18,7 @@ C++ 프로그래밍 언어는 개발자가 직접 메모리를 관리하는 방�
 이러한 경우를 최대한 줄이고자, `스마트 포인터(Smart Pointer)`라는 개념을 도입하게 됩니다. 자동으로 메모리 관리를 하자는게 목표였죠. `원시 포인터(Raw Pointer)`를 한 번 감싸 스스로 자신의 수명을 관리할 수 있게 하는 것입니다. 오늘은 이 스마트 포인터 중 `공유 포인터(Shared Pointer)`와 `순환 참조 문제`에 대해 알아보도록 하겠습니다.
 
 ---
+
 # 공유포인터
 
 ## shared_ptr
@@ -34,6 +37,7 @@ C++ 프로그래밍 언어는 개발자가 직접 메모리를 관리하는 방�
 ## MySharedPtr
 
 스마트 포인터를 직접 구현해보면 다음과 같습니다.
+
 ```cpp
 #ifndef MY_SMART_POINTER_SHAREDPOINTER_H
 #define MY_SMART_POINTER_SHAREDPOINTER_H
@@ -196,6 +200,7 @@ int main() {
 ```
 
 해당 코드의 결과는 다음과 같습니다.
+
 ```text
 ---Shared Ptr---
 스코프 종료
@@ -209,6 +214,7 @@ NewB Count: 2
 그러나 이렇게 단순하게 발생하는 순환 참조는 실제 프로젝트에서는 보기 힘듭니다. 보통 컴포넌트 패턴에서 어떤 클래스가 다른 클래스를 포함하는 경우 자주 발생하게 됩니다.
 
 컴포넌트 패턴의 예시는 다음과 같습니다.
+
 ```cpp
 #include <iostream>
 #include <string>
@@ -291,9 +297,9 @@ Current Weapon Component RefCount: 2
 ---게임 로직 테스트 종료---
 ```
 
-결과를 보면 이전에 봤던 예시와 같은 결과를 보여주고 있습니다. 즉, 액터와 컴포넌트가 서로를 참조하는 순환 참조가 발생하게 됩니다. 
+결과를 보면 이전에 봤던 예시와 같은 결과를 보여주고 있습니다. 즉, 액터와 컴포넌트가 서로를 참조하는 순환 참조가 발생하게 됩니다.
 
-그렇다면 순환 참조를 끊기 위해서는 어떻게 해야 할까요? 현재 코드는 약한 참조 기능이 없으므로, 가장 쉬운 방법은 원시 포인터를 사용하는 것입니다. 
+그렇다면 순환 참조를 끊기 위해서는 어떻게 해야 할까요? 현재 코드는 약한 참조 기능이 없으므로, 가장 쉬운 방법은 원시 포인터를 사용하는 것입니다.
 
 공유가 아닌 해당 객체 자체를 가지고 있는 것이죠. 코드는 다음과 같습니다.
 
@@ -408,7 +414,7 @@ class __shared_count
 
 private:
     _Sp_counted_base<_Lp>* _M_pi; // _Sp_counted_base 를 가리키는 포인터
-    
+
 }
 
 // ...
@@ -419,23 +425,25 @@ class _Sp_counted_base
 public:
   _Sp_counted_base() noexcept
   : _M_use_count(1), _M_weak_count(1) { }
-  
+
   // ... 생략 ...
 
 private:
     _Sp_counted_base(_Sp_counted_base const&) = delete;
     _Sp_counted_base& operator=(_Sp_counted_base const&) = delete;
-    
+
     _Atomic_word  _M_use_count;     // #shared
     _Atomic_word  _M_weak_count;    // #weak + (#shared != 0)
 };
 ```
+
 제어 블럭은 `use_count`와 `weak_count`로 나누어져 있습니다. 이는 다음을 의미합니다.
+
 - use_count: shared_ptr의 레퍼런스 카운트
 - weak_count: weak_ptr의 레퍼런스 카운트 + shared_ptr가 하나라도 살아있다면 제어 블록이 메모리에서 해제되지 않도록 막아줌.
 
 :::note
-__weak_ptr__
+**weak_ptr**
 
 하나 이상의 shared_ptr 인스턴스가 소유하는 객체에 대한 접근 권한을 제공하지만, 소유권은 가지지 않는 스마트 포인터입니다. 참조 카운팅에는 영향을 주지않고, 소유권을 양도받아 객체에 접근할 수 있게 도와주는 포인터라고 할 수 있습니다.
 :::
@@ -462,19 +470,16 @@ bool expired = weakActor.expired();
 shared_ptr<Actor> sharedActor_copy = weakActor.lock();
 ```
 
-표준 shared_ptr은 순환 참조 문제를 예방하기 위해서 weak_ptr이라는 포인터를 제공하고 있습니다. 코드와 같이 레퍼런스 카운트와는 다르게 작동하기 때문이죠. 
+표준 shared_ptr은 순환 참조 문제를 예방하기 위해서 weak_ptr이라는 포인터를 제공하고 있습니다. 코드와 같이 레퍼런스 카운트와는 다르게 작동하기 때문이죠.
 
-그러나 막상 사용하기 위해서는 위의 1, 2번과 같이 확인하는 과정을 거쳐야합니다. 또한, 효율성 측면에서도 weak_ptr 자체는 가볍지만, 실제 객체를 사용하기 위해 `lock()`을 호출하는 순간 새로운 shared_ptr를 생성하는 비용이 발생합니다. 
+그러나 막상 사용하기 위해서는 위의 1, 2번과 같이 확인하는 과정을 거쳐야합니다. 또한, 효율성 측면에서도 weak_ptr 자체는 가볍지만, 실제 객체를 사용하기 위해 `lock()`을 호출하는 순간 새로운 shared_ptr를 생성하는 비용이 발생합니다.
 
 따라서 실제 개발에서는 사용해야할 상황과 아닌 상황을 구별하거나, 자체 shared_ptr을 만들어 사용하는 것이 좋은 방법이 될 수 있겠습니다.
-
----
 
 # 마무리
 
 오늘은 순환 참조 문제에 대해 알아보았습니다. 스마트 포인터는 메모리 릭이나 댕글링 포인터 문제에서 개발자에게 도움을 주는 유용한 클래스라고 볼 수 있겠습니다. 그러나 제대로된 사용법을 모른다면 순환 참조 문제와 같이 눈치채기 힘든 상황이 펼쳐질 수도 있습니다.
 
----
 # Ref.
 
 [msdn](https://learn.microsoft.com/ko-kr/cpp/standard-library/shared-ptr-class?view=msvc-170)

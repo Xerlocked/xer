@@ -3,8 +3,9 @@ title: "크래프톤 정글 게임테크랩 1주차를 마치며"
 summary: "크래프톤 정글 게임테크랩 Week01 회고"
 date: "Mar 06 2025"
 draft: false
+Category: "이야기"
 tags:
-- Write
+    - Write
 ---
 
 # 1주차를 돌아보며
