@@ -2,6 +2,7 @@
 title: "나만의 언리얼 에디터 만들기 - 0x03"
 summary: "응답 메시지를 꾸며보자"
 date: "Dec 22 2024"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -11,7 +12,6 @@ tags:
 
 이전 편들에서 아쉬운 점이 하나 있었습니다. 바로 결과를 출력하는 방식이 아쉬웠는데요. 에디터 화면에 메시지를 띄우거나 로그 콘솔에 남기는 방식을 사용했습니다. 이는 사용자에게 알려주는 정보가 적을 수 밖에 없습니다. 그래서 제대로 된 알림창을 만들어보도록 하겠습니다.
 
----
 
 # 구현 과정
 
@@ -130,7 +130,6 @@ void UQuickAssetAction::DuplicateAssets(int32 NumOfAssets)
 
 ![e2](./3-3.png)
 
----
 
 # 마무리
 

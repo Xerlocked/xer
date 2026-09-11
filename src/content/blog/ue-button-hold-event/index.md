@@ -2,6 +2,7 @@
 title: "Button Hold 기능 구현"
 summary: "기본 버튼 이벤트만으로는 구현할 수 없는 Hold 입력을 타이머로 간단히 해결합니다."
 date: "Feb 23 2026"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine

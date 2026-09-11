@@ -2,6 +2,7 @@
 title: "나만의 언리얼 에디터 만들기 - 0x02"
 summary: "ChatGPT 연동하기"
 date: "Dec 21 2024"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -11,7 +12,6 @@ tags:
 
 AI는 현시점에서 가장 뜨거운 주제인 만큼 그와 관련된 개발 역시 에픽 게임즈 내부에서도 `스마트NPC` 라는 이름으로 발표한 적도 있었습니다. 이러한 점을 볼 때 앞으로 관련 기능이 많이 추가되겠지만 그전에 먼저 `ChatGPT`를 이용해 간단한 대화 정도 주고 받는 AI 어시스턴트를 만들어 보겠습니다.
 
----
 
 # 구현 과정
 
@@ -318,7 +318,6 @@ void UQuickAssetAction::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Res
 
 ![e2](./2-2.png)
 
----
 
 # 마무리
 

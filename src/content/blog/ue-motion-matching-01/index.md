@@ -2,6 +2,7 @@
 title: Motion Matching 1
 summary: 차세대 애니메이션 시스템 모션매칭에 대해 알아봅니다.
 date: "Sep 23 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -212,7 +213,6 @@ if (DataPreprocessor != EPoseSearchDataPreprocessor::None)
 ```
 이를 통해 각 데이터의 가중치를 편차 값으로 나누어 스케일을 맞추는 방식으로 정규화가 이루어집니다.
 
----
 
 # 마무리
 

@@ -2,6 +2,7 @@
 title: "AbilityTask와 TargetActor를 활용한 스킬 설계"
 summary: "타겟팅 인디케이터(Reticle) 표시부터 서버 데이터 동기화까지, GAS의 AbilityTask를 이용해 세밀한 위치 지정형 스킬을 구현하는 전 과정을 단계별로 정리했습니다."
 date: "Feb 04 2026"
+Category: "언리얼엔진"
 image: ./Circular_AOE_Indicator.webp
 draft: false
 tags:
@@ -22,7 +23,6 @@ tags:
 
 이번 포스팅에서는 그 첫 번째 단계인 **마우스 위치를 지정해 데이터를 전달하는 과정**을 집중적으로 살펴보겠습니다.
 
----
 
 # AbilityTask
 
@@ -111,7 +111,6 @@ void ATGameplayAbilityTargetActor::ConfirmTargetingAndContinue()
 
 ![fig4](./reticle_0.png "Fig 4. Reticle")
 
----
 # BlackHole
 타겟 데이터가 성공적으로 전달되면, 실제 블랙홀 역할을 할 액터를 스폰합니다. 개폐 원칙(OCP)를 고려하여 범용적인 BaseAreaEffector클래스 구조를 설계했습니다.
 
@@ -164,7 +163,6 @@ protected:
     TObjectPtr<USphereComponent> SphereComponent;
 };
 ```
----
 # 트러블 슈팅
 이번 구현에서 가장 중요했던 포인트입니다. 블루프린트를 통해 WaitTargetData 노드를 사용하면 제대로 작동하던 로직이, C++에서는 실행되지 않는 점이었습니다. 이는 지연 생성(Deferred Spawn)과 관련있습니다.
 
@@ -194,7 +192,6 @@ Task->ReadyForActivation();
 자세한 설명은 해당 파일을 읽어보시기를 추천드립니다.
 :::
 
----
 
 # 마무리
 ![fig6](./result_0.gif "Fig 6. 결과")

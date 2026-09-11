@@ -2,6 +2,7 @@
 title: Slice SkeletalMesh 플러그인 제작 과정 2
 summary: "Fab 출시를 위한 언리얼 플러그인 제작일지"
 date: "Aug 20 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine

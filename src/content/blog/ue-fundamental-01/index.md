@@ -2,6 +2,7 @@
 title: "Unreal Engine Fundamental - 0x01"
 summary: "언리얼 엔진의 코어 기능을 알아봅니다."
 date: "Dec 03 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -141,7 +142,6 @@ void FObjectInitializer::Construct_Internal()
 
 즉, C++의 함수 호출 스택(Call Stack)에 맞춰 FObjectInitializer도 스택처럼 동작하며, 이를 통해 명시적으로 this를 넘기지 않아도 부모-자식 간의 계층 구조가 올바르게 형성되는 것입니다. 2번 설명 과정에서 Outer 개념이 나왔는데 이 역시 나중에 자세히 설명드리겠습니다. 지금은 현재 나를 부르고 있는 객체가 누구인지 나타낸다고 생각해주세요.
 
----
 
 # UCLASS
 
@@ -326,7 +326,6 @@ public: \
 
 결국 GENERATED_BODY는 엔진 필수 코드를 UHT가 대신 작성할 수 있도록 한 줄로 압축해 놓은 매크로 정의입니다.
 
----
 
 # 마무리
 

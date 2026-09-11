@@ -2,6 +2,7 @@
 title: "나만의 언리얼 에디터 만들기 - 0x05"
 summary: "월드 상의 모든 라이트를 한번에 끄는 방법"
 date: "Dec 24 2024"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -262,7 +263,6 @@ void FXLightSwitchModule::ExecuteLight()
 Github에서 해당 플러그인의 전체 코드를 보실 수 있습니다.
 :::github{repo="Xerlocked/LightSwitchPlugin"}
 
----
 
 # 마무리
 

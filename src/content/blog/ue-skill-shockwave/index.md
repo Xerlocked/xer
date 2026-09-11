@@ -2,6 +2,7 @@
 title: GAS로 쇼크웨이브 스킬 구현하기
 summary: "GAS로 직선형 범위 공격을 만들어 봅시다."
 date: "Jan 15 2026"
+Category: "언리얼엔진"
 image: ./Concept.png
 draft: false
 tags:
@@ -16,7 +17,6 @@ tags:
 
 그러면 시작해보겠습니다.
 
----
 
 # GameplayAbility 구현
 
@@ -250,7 +250,6 @@ void ATPlayerController::HeldAbilityAction(const FInputActionValue& Value, const
 
 ![fig7](./result_0.gif "Fig 7. 최종 적용 모습")
 
----
 
 2026.01.15 추가 작성
 
@@ -298,7 +297,6 @@ void ATPlayerController::HeldAbilityAction(const FInputActionValue& Value, const
 
 ![fig15](./result_1.gif "Fig 15. 최종 결과")
 
----
 
 # 마무리
 

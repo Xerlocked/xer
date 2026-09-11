@@ -2,6 +2,7 @@
 title: "나만의 언리얼 에디터 만들기 - 0x04"
 summary: "블루프린트 노드 꾸미기"
 date: "Dec 23 2024"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -13,7 +14,6 @@ tags:
 
 ![이전노드](./4-3.png)
 
----
 
 # 구현 과정
 
@@ -176,7 +176,6 @@ void FRealXtensionModule::StartupModule()
 
 위와 같이 그냥 플러그인 시작 모듈 부분에 코드를 넣어도 작동이 됩니다. 하지만 조금 뒤에 나올 게시글에서 커스텀 노드도 만들고 다양한 걸 하기 위한 초석이라고 생각해 주세요.
 
----
 
 # 마무리
 

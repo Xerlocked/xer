@@ -2,6 +2,7 @@
 title: "제자리 회전(Turn In Place)구현하기"
 summary: "몬스터 Turn In Place를 AnimCurve를 이용해서 구현해봅니다."
 date: "Mar 30 2026"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -19,7 +20,6 @@ tags:
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aMbI7XtGIAo?si=SYviPEW4d2W2VmKY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
----
 
 ## Animation Curve란?
 
@@ -36,7 +36,6 @@ tags:
 
 ![Fig 1. Turn_90_Right 애니메이션에 심어진 DistanceCurve. 시작(-90)에서 끝(0)으로 수렴한다.](./turn_anim_curve.png)
 
----
 
 # 구현
 
@@ -70,7 +69,6 @@ float UMyAnimInstance::GetYawDelta(AActor* Target, AActor* Self)
 
 ![Fig 3. YawDelta ABS 처리 및 IsTurn180 판별 로직](./calc_yaw_delta.png)
 
----
 
 ## State Machine 전환 조건 설정
 
@@ -78,7 +76,6 @@ Idle → Turn 상태 전환 조건은 단순합니다. YawDelta가 45도를 넘�
 
 ![Fig 4. Idle to Turn Right 전환 조건 - YawDelta > 45.0](./idle_to_turn_cond.png)
 
----
 
 ## Turn 애니메이션 블렌딩
 
@@ -88,7 +85,6 @@ Turn 스테이트 안에서는 `IsTurn180` 값으로 90도 / 180도 애니메이
 
 여기서 **두 애니메이션 모두 DistanceCurve를 동일한 규칙으로 설정**해야 합니다. 180도 애니메이션이라면 시작값 `-180`, 90도라면 `-90`으로 시작해 0으로 끝나도록 커브를 심어둡니다.
 
----
 
 ## 커브 값으로 캐릭터 회전
 
@@ -136,7 +132,6 @@ void AMyCharacter::TurnInPlace(float DeltaTime, float CurveDelta)
 }
 ```
 
----
 
 # 흔한 실수 & 주의사항
 
@@ -146,7 +141,6 @@ void AMyCharacter::TurnInPlace(float DeltaTime, float CurveDelta)
 
 **3. FInterp Speed를 너무 높게 잡는 경우**: `InterpSpeed`가 너무 높으면 커브 값이 무의미해지고 `Set Actor Rotation`과 다를 게 없어집니다. 5.0 전후에서 시작해 캐릭터 무게감에 맞게 조정하세요.
 
----
 
 # 마무리
 
