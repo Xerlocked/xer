@@ -20,8 +20,13 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     Category: z.string().trim().min(1).default("미분류"),
+    series: z.string().trim().min(1).optional(),
+    seriesOrder: z.number().int().positive().optional(),
     draft: z.boolean().optional(),
     image: image().optional(),
+  }).refine(data => (data.series !== undefined) === (data.seriesOrder !== undefined), {
+    message: "series와 seriesOrder는 함께 입력해주세요.",
+    path: ["seriesOrder"],
   }),
 })
 

@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content"
 import TableOfContents from "@components/TableOfContents.astro"
+import SeriesNavigation from "@components/SeriesNavigation.astro"
+import { getSeriesPosts } from "@lib/series"
 
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"projects">
@@ -11,26 +13,29 @@ const { entry } = Astro.props
 const { collection } = entry
 const { Content, headings } = await render(entry)
 
-// Get the next and prev entries (modulo to wrap index)
-const items = (await getCollection(collection))
+const series = entry.collection === "blog" ? entry.data.series : undefined
+const seriesPosts = series ? getSeriesPosts(await getCollection("blog"), series) : []
+// Series follow reading order without wrapping; other entries retain date order.
+const items = series ? seriesPosts : (await getCollection(collection))
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 const index = items.findIndex(x => x.id === entry.id)
-const prev = items[(index - 1 + items.length) % items.length]
-const next = items[(index + 1) % items.length]
+const prev = series ? (index > 0 ? items[index - 1] : undefined) : items[(index - 1 + items.length) % items.length]
+const next = series ? (index >= 0 ? items[index + 1] : undefined) : items[(index + 1) % items.length]
 ---
 
 <div>
+  {series && seriesPosts.length > 0 && <SeriesNavigation name={series} posts={seriesPosts} currentId={entry.id} />}
   {collection === "blog" && <TableOfContents headings={headings} />}
   <article class:list={[{ "blog-content": collection === "blog" }]}>
     <Content/>
   </article>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <a href={`/${prev.collection}/${prev.id}`} class="ui-card group p-5 gap-3 flex items-center">
+  {(prev || next) && <nav aria-label={series ? "시리즈 이전·다음 편" : "이전·다음 글"} class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {prev && <a href={`/${prev.collection}/${prev.id}`} class="ui-card group p-5 gap-3 flex items-center">
       <div class="order-2 w-full h-full group-hover:text-foreground blend">
         <div class="flex flex-wrap gap-2">
           <div class="text-sm uppercase">
-            Prev
+            {series ? "이전 편" : "Prev"}
           </div>
         </div>
         <div class="font-semibold mt-3 text-foreground">
@@ -41,11 +46,11 @@ const next = items[(index + 1) % items.length]
         <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-transform duration-150" />
         <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-transform duration-150" />
       </svg>
-    </a>
-    <a href={`/${next.collection}/${next.id}`} class="ui-card group p-5 gap-3 flex items-center">
+    </a>}
+    {next && <a href={`/${next.collection}/${next.id}`} class="ui-card group p-5 gap-3 flex items-center sm:col-start-2">
       <div class="w-full h-full text-right group-hover:text-foreground blend">
         <div class="text-sm uppercase">
-          Next
+          {series ? "다음 편" : "Next"}
         </div>
         <div class="font-semibold mt-3 text-foreground">
           {next.data.title}
@@ -55,8 +60,8 @@ const next = items[(index + 1) % items.length]
         <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-transform duration-150" />
         <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-transform duration-150" />
       </svg>
-    </a>
-  </div>
+    </a>}
+  </nav>}
 </div>
 
 <style>

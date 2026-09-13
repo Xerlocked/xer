@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from "astro:content"
+
+type Props = {
+  name: string
+  posts: CollectionEntry<"blog">[]
+  currentId: string
+}
+
+const { name, posts, currentId } = Astro.props
+const index = posts.findIndex(post => post.id === currentId)
+---
+
+<nav aria-label="시리즈" class="mb-4 rounded-lg border border-border bg-card px-5">
+  <details class="group/series">
+    <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 rounded-md py-4 text-sm text-foreground [&::-webkit-details-marker]:hidden">
+      <span class="min-w-0 break-words font-semibold">{name} 시리즈</span>
+      <span class="flex shrink-0 items-center gap-3 text-xs text-muted-foreground">
+        <span>{index >= 0 ? `${index + 1} / ${posts.length}편` : `공개 ${posts.length}편`}</span>
+        <span class="group-open/series:hidden">펼치기</span>
+        <span class="hidden group-open/series:inline">접기</span>
+        <svg aria-hidden="true" class="size-4 group-open/series:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
+      </span>
+    </summary>
+    <ol class="space-y-1 border-t border-border py-3 text-sm">
+      {posts.map((post, position) => (
+        <li>
+          <a href={`/blog/${post.id}`} aria-current={post.id === currentId ? "page" : undefined}
+            class:list={["flex min-h-11 items-center gap-3 rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground", { "bg-muted font-semibold text-foreground": post.id === currentId }]}>
+            <span class="shrink-0 tabular-nums text-muted-foreground">{position + 1}.</span>
+            <span class="min-w-0 break-words">{post.data.title}</span>
+            {post.id === currentId && <span class="ml-auto shrink-0 text-xs">현재 글</span>}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </details>
+</nav>
