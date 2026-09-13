@@ -1,8 +1,8 @@
 ---
-title: "AI - LLM Structure and Prompt"
+title: "LLM Structure and Prompt"
 summary: "ELIZA와 SVM, AlexNet을 거쳐 생성형 AI까지의 흐름을 살펴봅니다. 그 사이에서 프롬프트의 역할과 앞으로의 AI 발전 방향도 살펴봅니다."
-date: "Sep 2 2026"
-draft: true
+date: "Sep 12 2026"
+draft: false
 Category: AI
 series: "I Dont know AI"
 seriesOrder: 1
