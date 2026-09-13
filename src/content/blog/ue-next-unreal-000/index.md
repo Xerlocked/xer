@@ -3,9 +3,10 @@ title: Next Unreal - Prologue
 summary: 우리가 알던 언리얼 엔진이 바뀌고 있다.
 date: "Apr 07 2026"
 draft: false
+Category: "언리얼엔진"
 tags:
-- UnrealEngine
-- NextUnreal
+    - UnrealEngine
+    - NextUnreal
 ---
 
 # 들어가며
@@ -19,27 +20,22 @@ tags:
 하지만, 앞으로 언리얼 엔진이 기술 전환을 예고하고 있는 만큼, "일단 쓰던 거 쓰지 뭐" 라고 넘기기에는 무시 못할 전환 속도라는 겁니다.
 그래서 저는 `Next Unreal` 이라는 이름의 시리즈를 작성하려고 합니다.
 
----
-
 # 왜 지금인가?
 
 언리얼 5는 단순한 버전 업이 아니었습니다. `Nanaite`, `Lumen`처럼 렌더링 기술만 바뀐 게 아니라, 게임플레이를 구성하는 방식 자체가 바뀌고 있습니다.
 
-> 미래에 **애님 블루프린트를 대체할** 언리얼 애니메이션 프레임워크(Unreal Animation Framework, UAF)를 향해 나아가면서, 컨트롤 릭과 UAF의 보다 깊은 통합을 위한 기반을 마련하기 위해 일부 프로시저럴 노드를 컨트롤 릭으로 이전하고 있습니다. 
+> 미래에 **애님 블루프린트를 대체할** 언리얼 애니메이션 프레임워크(Unreal Animation Framework, UAF)를 향해 나아가면서, 컨트롤 릭과 UAF의 보다 깊은 통합을 위한 기반을 마련하기 위해 일부 프로시저럴 노드를 컨트롤 릭으로 이전하고 있습니다.
 >
->__- 출처: [언리얼 엔진 기술 블로그](https://www.unrealengine.com/tech-blog/explore-the-updates-to-the-game-animation-sample-project-in-ue-5-7?lang=ko)__
+> **- 출처: [언리얼 엔진 기술 블로그](https://www.unrealengine.com/tech-blog/explore-the-updates-to-the-game-animation-sample-project-in-ue-5-7?lang=ko)**
 
-
-|기존 방식|새로운 방식|
-|---|---|
-|Anim Blueprint + State Machine|Motion Matching + UAF|
-|Behavior Tree + Blackboard|State Tree|
-|Camera Component + Spring Component|Gameplay Camera System|
-|Character Movement Component|Mover|
+| 기존 방식                           | 새로운 방식            |
+| ----------------------------------- | ---------------------- |
+| Anim Blueprint + State Machine      | Motion Matching + UAF  |
+| Behavior Tree + Blackboard          | State Tree             |
+| Camera Component + Spring Component | Gameplay Camera System |
+| Character Movement Component        | Mover                  |
 
 이게 단순한 기능 추가가 아니라, 에픽이 기존 시스템의 구조적 한계를 인정하고, 새로운 패러다임으로 대체하고 있습니다. AnimBP의 스파게티 노트, BT의 확장성 한계, CMC의 네트워크 복잡성, 실무에서 맞닥뜨렸던 불편함들이 새로운 시스템들의 설계 배경이라고 할 수 있습니다.
-
----
 
 # 이 시리즈에서 다루는 것
 
@@ -58,15 +54,11 @@ tags:
 - **Vol.6 - State Tree**
     - 계층형 상태 머신, AI 행동을 데이터 중심으로 설계
 
----
-
 # 시리즈를 읽는 방법
 
 순서대로 읽는 걸 권장합니다. 특히 Chooser와 Pose History는 이후 시리즈에서 전제 지식처럼 등장합니다. 처음부터 따라오면 흐름이 자연스럽게 연결됩니다.
 
 각 글은 이론보다는 언리얼에서 제공하는 샘플 프로젝트를 바탕으로 작성했습니다. 개념을 이해한 뒤 자신의 프로젝트에 적용해볼 수 있도록 구성해보겠습니다.
-
----
 
 # 마지막으로
 

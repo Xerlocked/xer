@@ -3,9 +3,11 @@ title: Next Unreal - Chooser
 summary: 데이터 기반으로 분기를 처리하는 새로운 시스템
 date: "May 01 2026"
 draft: false
+Category: "언리얼엔진"
 tags:
-- UnrealEngine
-- NextUnreal
+    - UnrealEngine
+    - NextUnreal
+    - Chooser
 ---
 
 # 들어가며
@@ -16,11 +18,10 @@ Chooser는 이 문제를 해결하기 위한 아이디어에서 시작하였습�
 
 이 글에서는 Chooser Table이 어떤 구조로 동작하는지, 그리고 실제로 어떻게 AnimBP와 연결하는지를 다룹니다.
 
----
-
 # Chooser란 무엇인가
 
-Chooser는 **입력 파라미터(조건)를 기반으로 Output(에셋)을 선택하는 데이터 테이블**입니다. 에픽에서 정의하기를 
+Chooser는 **입력 파라미터(조건)를 기반으로 Output(에셋)을 선택하는 데이터 테이블**입니다. 에픽에서 정의하기를
+
 > [_Data table used to choose an asset based on input parameters_](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/ChooserTable?application_version=5.6)
 >
 > 입력 매개변수 기반으로 에셋을 선택하는데 사용되는 데이터 테이블
@@ -33,15 +34,13 @@ Chooser는 **입력 파라미터(조건)를 기반으로 Output(에셋)을 선�
 
 Chooser Table에는 세 가지 타입이 있습니다.
 
-| 타입 | 설명 |
-|------|------|
-| **Animation Chooser** | 특정 AnimBP 클래스와 연동, ABP의 프로퍼티를 직접 바인딩 |
-| **Generic Chooser** | ABP 의존 없이 파라미터를 직접 정의, 범용 사용 가능 |
-| **No Primary Result Chooser** | 결과 없이 조건만 평가, 부가 로직 처리용 |
+| 타입                          | 설명                                                    |
+| ----------------------------- | ------------------------------------------------------- |
+| **Animation Chooser**         | 특정 AnimBP 클래스와 연동, ABP의 프로퍼티를 직접 바인딩 |
+| **Generic Chooser**           | ABP 의존 없이 파라미터를 직접 정의, 범용 사용 가능      |
+| **No Primary Result Chooser** | 결과 없이 조건만 평가, 부가 로직 처리용                 |
 
 가장 많이 쓰게 될 타입은 **Animation Chooser**와 **Generic Chooser** 두 가지입니다.
-
----
 
 ## Chooser Table 만들기
 
@@ -57,8 +56,6 @@ Content Browser에서 우클릭 → `Animation` → `Chooser Table`을 선택합
 
 > Animation Chooser를 선택하면 이후 컬럼 바인딩 시 원하는 ABP의 프로퍼티 목록이 선택합니다.
 
----
-
 ## Chooser Table 구조 이해하기
 
 테이블을 열면 처음엔 아무것도 없을텐데, 여기서 Result 항목 각 행에 반환할 Animation Asset(또는 다른 Chooser)을 추가합니다. (드래그&드롭)
@@ -67,12 +64,12 @@ Content Browser에서 우클릭 → `Animation` → `Chooser Table`을 선택합
 
 이제 조건 컬럼을 추가합니다. `+ Add Column`을 누르면 Evaluator 타입을 선택할 수 있습니다. 자주 쓰는 타입은 다음과 같습니다.
 
-| Evaluator 타입 | 설명 |
-|----------------|------|
+| Evaluator 타입  | 설명                                           |
+| --------------- | ---------------------------------------------- |
 | **Float Range** | 특정 범위 안의 값인지 평가 (Speed: 100~300 등) |
-| **Bool** | true / false 조건 |
-| **Enum** | 열거형 값 비교 |
-| **Tag Query** | Gameplay Tag 기반 조건 |
+| **Bool**        | true / false 조건                              |
+| **Enum**        | 열거형 값 비교                                 |
+| **Tag Query**   | Gameplay Tag 기반 조건                         |
 
 컬럼을 추가하고 나면, 각 컬럼의 헤더에서 **Bind** 버튼으로 ABP 프로퍼티와 연결합니다.
 
@@ -87,8 +84,6 @@ Chooser는 테이블을 **위에서 아래로 순서대로 평가**하고, 모�
 :::note
 만약 우선순위로 반환이 아닌 가중치 랜덤으로 반환하길 원하는 경우 `+Add Column`에서 `Randomize` 조건을 추가합니다.
 :::
-
----
 
 ## AnimBP에 Chooser 연결하기
 
@@ -106,21 +101,18 @@ AnimGraph에서 State Machine 안의 State 하나를 열고, 노드 팔레트에
 
 Details 패널의 주요 항목은 다음과 같습니다.
 
-| 항목 | 내용 |
-| --- | --- |
-|Evaluation Frequency | 얼마나 자주 평가할지 (On Become Relevant 권장) |
-| Chooser | 연결할 Chooser Table |
-| Max Active Blends | 동시에 블렌딩할 최대 애니메이션 수 |
-| Store Blended Pose | 블렌딩 결과를 캐싱할지 여부 |
-
+| 항목                 | 내용                                           |
+| -------------------- | ---------------------------------------------- |
+| Evaluation Frequency | 얼마나 자주 평가할지 (On Become Relevant 권장) |
+| Chooser              | 연결할 Chooser Table                           |
+| Max Active Blends    | 동시에 블렌딩할 최대 애니메이션 수             |
+| Store Blended Pose   | 블렌딩 결과를 캐싱할지 여부                    |
 
 `Evaluation Frequency`를 `On Become Relevant`로 설정하면 State가 활성화될 때만 평가합니다. 매 틱마다 평가가 필요하다면 `Loop` 혹은 `Update`로 변경하시면 됩니다.
 
 전체 AnimBP 구조는 이렇게 단순해집니다. 복잡한 Transition 노드 없이 Chooser Player 하나가 State 전체를 담당하게 되는 것이죠.
 
 ![Fig 9. AnimBP 전체 구조 — Chooser State 중심](abp_full_0.png)
-
----
 
 ## 추가: Generic Chooser
 
@@ -131,6 +123,7 @@ Details 패널의 주요 항목은 다음과 같습니다.
 파라미터 설정에서 `Class Parameter`와 `Struct Parameter`를 조합해 Input/Output 방향을 정의합니다.
 
 만약 C++에서 사용할 경우 다음과 같은 예시를 통해 사용하시면 됩니다. 그러나 Chooser는 BP에서 사용하는 것을 매우매우 추천드립니다.
+
 ```cpp
 // C++에서 Chooser를 평가하는 예시
 #include "Chooser/ChooserFunctionLibrary.h"
@@ -148,8 +141,6 @@ UObject* Result = UChooserFunctionLibrary::EvaluateChooser(
 );
 ```
 
----
-
 # 예제로 살펴보기
 
 ![Fig 11. 샘플 예제 액터 생성](chooser_actor_0.png)
@@ -159,8 +150,6 @@ Direction, IsJump, State 값이 실시간으로 바뀌면서 Chooser가 적절�
 ![Fig 12. 런타임 Chooser 동작 — 상태에 맞는 애니메이션이 출력](chooser_1.gif)
 
 ![Fig 13. 런타임 Chooser 동작 — ChooserTable에서 알맞은 에셋을 선택](chooser_0.gif)
-
----
 
 # 마무리
 
@@ -176,18 +165,20 @@ Direction, IsJump, State 값이 실시간으로 바뀌면서 Chooser가 적절�
 
 다음 글에서는 Motion Matching이 과거 자세와 궤적을 어떻게 기억하는지, **Pose History**를 다뤄보겠습니다.
 
----
-
 # 추가 자료
 
 **언리얼 공식문서에서 제공하는 Chooser Table 활용 방법**
+
 - [언리얼 엔진의 다이내믹 에셋 선택](https://dev.epicgames.com/documentation/unreal-engine/dynamic-asset-selection-in-unreal-engine?application_version=5.5&lang=ko)
 
 **UE5 Chooser 기능 요약**
+
 - [UE55 Chooser Functionality](https://mike.gold/notes/x-bookmarks/unreal/ue55-chooser-functionality)
 
 **UE5의 Chooser 사용 경험에 대한 Ostap Leonov의 Medium 게시글**
+
 - [Thoughts on Chooser plugin in UE5](https://bigm227.medium.com/thouhgts-on-chooser-plugin-in-ue5-8665b921c0df)
 
 **Chooser Table 이슈에 관한 트러블 슈팅**
+
 - [Unreal Engine Forum](https://forums.unrealengine.com/t/cant-find-the-function-binding-from-chooser-table-chooser-table-plugin-ue-5-4-2/1907086)

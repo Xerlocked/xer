@@ -2,6 +2,7 @@
 title: 하데스(Hades) 스타일의 Dash 구현
 summary: "하데스 스타일의 대쉬 로직 구현과 GameplayCue를 이용한 트레일 이펙트 최적화 경험 공유합니다."
 date: "Feb 15 2026"
+Category: "언리얼엔진"
 image: ./collision_1.png
 draft: false
 tags:
@@ -12,7 +13,6 @@ tags:
 
 오늘은 많은 액션 게임의 기본이자 핵심인 **공용 회피 스킬(Dash)** 을 구현해 보겠습니다. 단순히 위치를 옮기는 것이 아니라, 장애물을 지능적으로 판단하고 연출까지 챙긴 [하데스(Hades)](https://www.supergiantgames.com/games/hades/) 스타일을 따라해보겠습니다.
 
----
 
 # Dash
 
@@ -144,7 +144,6 @@ bool UTerroriaBlueprintLibrary::IsValidLocation(const UObject* WorldContextObjec
 
 캐릭터를 이동시키기 위해 GAS에서 기본으로 제공하고 있는 `Apply Rootmotion Move to Force` 함수를 사용합니다. 이 함수 이외에도 5가지 정도 상황에 맞게 이동 시킬 수 있는 함수를 제공하고 있습니다.
 
----
 
 # GameplayCue
 
@@ -206,12 +205,10 @@ bool AGameplayCueNotify_Actor::OnRemove_Implementation(AActor* MyTarget, const F
 
 이때 중요한 것이 Apply Rootmotion Move to Force의 `Movement Mode`입니다. **Walking**으로 설정 시 캐릭터 아래로 Raycast를 진행하여 땅인지 검사합니다.<br>그래서 No Collision 상태에서는 Walking을 통한 이동을 할 수 없어 제자리에 멈추게 됩니다. 그러므로 **Flying**을 선택해 검사를 하지 않는 방향으로 수정합니다.
 
----
 
 # 최종 결과
 <iframe src="https://player.vimeo.com/video/1166279911?badge=0&autopause=1&player_id=0&app_id=58479" width="800" height="600" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="dash"></iframe>
 
----
 
 # 마무리
 

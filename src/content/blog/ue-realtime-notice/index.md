@@ -2,6 +2,7 @@
 title: 서버 점검 없이 실시간 공지사항 띄우기
 summary: GameInstanceSubsystem과 JSON 자동 파싱을 이용한 라이브 업데이트 구현 가이드
 date: "Nov 28 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -21,7 +22,6 @@ tags:
 1. 실시간 공지사항을 유저에게 알리기
 2. 게임 내 글로벌 경험치 배율 조정
 
----
 
 # 1. 계획
 
@@ -56,7 +56,6 @@ __서브시스템을 사용하는 이유__
 2. 서브시스템: HTTP 요청을 보내고 응답을 받아 C++ 구조체로 업데이트합니다.
 3. 게임플레이(UI): 서브시스템의 Delegate를 구독하고 있다가, 데이터가 갱신되면 UI를 갱신합니다.
 
----
 
 # 2. 구현
 
@@ -198,7 +197,6 @@ if (FJsonObjectConverter::JsonObjectStringToUStruct(ResponseMessage, &NewGameCon
 
 간단한 UI를 만들고 테스트를 해봅시다. 공지사항 부분에 텍스트 메시지가, 빨간 숫자 부분에 숫자 데이터가 출력됩니다.
 
----
 
 # 3. 결과
 
@@ -206,7 +204,6 @@ if (FJsonObjectConverter::JsonObjectStringToUStruct(ResponseMessage, &NewGameCon
 
 저는 콘솔 명령어를 추가해서 Request 요청을 보내고 있습니다. 결과화면에서는 2번의 데이터 갱신을 통해 텍스트가 변경되는 것을 볼 수 있습니다. 이제 이 Request 요청을 특정 주기마다 보내면 항상 데이터 최신화가 됩니다. 응용 방식은 매우 다양합니다.
 
----
 
 # 마무리
 

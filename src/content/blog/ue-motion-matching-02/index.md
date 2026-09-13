@@ -2,6 +2,7 @@
 title: Motion Matching 2
 summary: 차세대 애니메이션 시스템 모션매칭에 대해 알아봅니다.
 date: "Oct 07 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine

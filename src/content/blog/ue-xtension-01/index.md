@@ -2,6 +2,7 @@
 title: "나만의 언리얼 에디터 만들기 - 0x01"
 summary: "커스텀 Plugin을 만들어 에디터를 확장해보자"
 date: "Dec 20 2024"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -13,7 +14,6 @@ tags:
 
 **엔진 버전은 5.3입니다.**
 
----
 
 # 구현 과정
 
@@ -239,7 +239,6 @@ void UQuickAssetAction::DuplicateAssets(int32 NumOfAssets)
 
 ![9.png](./1-9.png)
 
----
 
 # 마무리
 

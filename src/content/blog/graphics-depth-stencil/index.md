@@ -3,8 +3,12 @@ title: "D3D11 - Depth/Stencil"
 summary: "Depth/Stencil에 대해 알아보자"
 date: "Mar 19 2025"
 draft: false
+Category: "그래픽스"
 tags:
-- Graphics
+    - Graphics
+    - DirectX
+    - Depth
+    - Stencil
 ---
 
 # 목표
@@ -33,6 +37,7 @@ DirectX11의 Depth/Stencil Buffer를 이해하기
 가 주된 내용입니다.
 
 ### Depth Buffer (깊이 버퍼)
+
 ![깊이버퍼](./z-buffer.png)
 
 - 이름에서도 알 수 있듯이 각 `픽셀의 깊이 정보`를 저장하는 버퍼입니다.
@@ -44,10 +49,11 @@ DirectX11의 Depth/Stencil Buffer를 이해하기
 - 32비트의 부동 소수점 값으로 구성합니다.
 - DX11에서는 `DXGI_FORMAT_D24_UNORM_S8_UINT` 플래그를 통해 24비트의 깊이버퍼와 8비트의 스텐실 정보를 동시에 저장하는 방식을 사용합니다.
 - Depth Test는 두 픽셀의 깊이 값을 비교하는데 `LESS`, `LESS_EQUAL`
- 과 같은 비교 함수를 사용해서 두 픽셀의 깊이를 비교합니다.
+  과 같은 비교 함수를 사용해서 두 픽셀의 깊이를 비교합니다.
 - 대표적인 예시: `오클루전 컬링`, `그림자 및 반사 효과`
 
 ### Stencil Buffer (스텐실 버퍼)
+
 ![스텐실버퍼](./stencil.png)
 
 - 각 픽셀에 대해 추가적인 마스킹 정보를 저장하여 특정 픽셀에 대한 렌더링 조건을 제어하게 됩니다.
@@ -61,6 +67,7 @@ DirectX11의 Depth/Stencil Buffer를 이해하기
 - 대표적인 예시: `스텐실 쉐도잉`, `후처리`, `데칼 및 특수효과`
 
 ## DirectX11 사용 방법
+
 - `ID3D11DepthStencilState` 인터페이스를 사용하여 Depth & Stencil Test에 관한 설정을 정의합니다.
 - D3D11_DEPTH_STENCIL_DESC 구조체를 통해 깊이 테스트의 활성화 여부, 비교함수, 스텐실 테스트 설정등을 지정할 수 있습니다.
 - 이렇게 생성된 Depth/Stencil 객체는 파이프라인에 바인딩 됨, 이후 렌더링 호출에서 해당 `State`를 사용합니다.

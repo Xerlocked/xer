@@ -2,6 +2,7 @@
 title: Slice SkeletalMesh 플러그인 제작 과정 1
 summary: "Fab 출시를 위한 언리얼 플러그인 제작일지"
 date: "Aug 20 2025"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -126,7 +127,6 @@ void UAPSkinnedProceduralMeshComponent::UpdateCPUSkinnedMesh()
 
 ![이미지](./s.gif "절단된 버텍스(파랑)는 움직이지 않는 모습(왼쪽) / 절단된 버텍스(파랑)가 움직이는 모습(오른쪽)")
 
----
 
 # 마무리
 

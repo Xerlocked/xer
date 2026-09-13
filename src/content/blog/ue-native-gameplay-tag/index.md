@@ -2,6 +2,7 @@
 title: "Native GameplayTag"
 summary: "언리얼 엔진 C++ 개발 환경에서 GameplayTag를 정의하고 사용하는 두 가지 방법"
 date: "Mar 16 2026"
+Category: "언리얼엔진"
 draft: false
 tags:
 - UnrealEngine
@@ -21,7 +22,6 @@ const FGameplayTag MyTag = FGameplayTag::RequestGameplayTag(FName("My.Gameplay.T
 
 오늘은 프로젝트 규모와 관리 스타일에 따라 선택할 수 있는 두 가지의 GameplayTags 구현 방식을 알아보겠습니다.
 
----
 
 # 1. 중앙 집중형
 첫 번째 방식은 구조체 내부에 태그들을 모아두고, `AssetManager`를 통해 엔진 초기화 시점에 한꺼번에 등록하는 방식입니다. 태그가 많아질 때 한눈에 관리하기 좋습니다.
@@ -96,7 +96,6 @@ const FMyGameplayTags& GameplayTags = FMyGameplayTags::Get();
 FGameplayTag MyTag = GameplayTags.Attribute_Primary_Strength;
 ```
 
----
 
 # 2. 매크로를 활용한 모듈형
 언리얼 엔진 내부에서 자주 사용되는 방식으로, 특정 클래스나 모듈에 종속된 태그를 선언할 때 매우 간편합니다. 별도의 관리 클래스 없이 헤더와 소스 파일 쌍만 있으면 사용할 수 있습니다.
@@ -154,7 +153,6 @@ namespace UE::GameplayTags
 FGameplayTag TestTag = UE::GameplayTags::GameplayCue_Test;
 ```
 
----
 
 # 3. 어떤 기준으로 선택해야 할까?
 특징 | 중앙 집중형 | 모듈형
@@ -163,12 +161,10 @@ FGameplayTag TestTag = UE::GameplayTags::GameplayCue_Test;
 초기화 | AssetManager를 통해 명시적으로 | 정의 시 자동 등록
 추천 | 프로젝트 전체에서 공용으로 사용 | 특정 기능이나 모듈 내에서
 
----
 
 # 마무리
 Native GameplayTags를 사용하면 **FName** 기반의 프로그래밍에서 벗어나 **컴파일 타임 체크가 가능한 안정적인 코드**를 작성할 수 있게됩니다. 위 표를 기준으로 여러분의 프로젝트 상황에 맞춰 적절한 방식을 선택해보길 바랍니다. 감사합니다.
 
----
 # Ref.
 
 [Unreal Engine Gameplay Tags 공식 문서](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/gameplay-tags?application_version=4.27)

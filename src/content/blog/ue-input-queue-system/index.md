@@ -2,6 +2,7 @@
 title: "GameplayAbility Input Queue System"
 summary: "Unreal Engine GAS 기반 Input Queue System 설계와 구현"
 date: "Mar 09 2026"
+Category: "언리얼엔진"
 image: ./after_0.gif
 draft: false
 tags:
@@ -27,7 +28,6 @@ _지금 당장 실행할 수 없는 입력을 잠시 저장해두고, 실행 가
 이 시스템은 [Behind the Scenes of Mortal Shell | Inside Unreal](https://www.youtube.com/watch?v=8yLq7jlVCAY&t=6090s) 에서 영감을 얻어 제작하게 되었습니다.
 :::
 
----
 
 # GameplayInputQueueSystem
 
@@ -73,7 +73,6 @@ Input Queue 시스템의 목표는 다음과 같습니다.
 - **InputBufferConfig**: 입력별 우선순위와 유효시간을 관리하는 데이터
 - **AbilitySystemComponent**: 실제 Ability 활성화를 수행하는 GAS 컴포넌트
 
----
 
 # 핵심 분석
 
@@ -580,7 +579,6 @@ if (!bBuffered && GetTASC())
 
 구현을 한 모습을 보면, Input Queue System을 추가하기 위해 새로운 입력 체계를 작성한 것이 아닌 기존의 GAS 입력 처리 앞단에 Input Queue 계층을 추가하여 컨트롤하고 있습니다.
 
----
 
 # 그래서 장점이 뭔가요?
 
@@ -597,7 +595,6 @@ if (!bBuffered && GetTASC())
 4. **데이터 기반 튜닝이 가능하다.**
     - 입력별 유효 시간과 우선순위를 DataAsset으로 조정할 수 있어 전투 감각 개선이 쉽습니다.
 
----
 
 # 개선 할 점은 뭔가요?
 
@@ -610,7 +607,6 @@ if (!bBuffered && GetTASC())
 4. **디버깅 강화**
     - 입력 큐는 내부 상태가 안 보여서 디버깅이 어렵습니다. 시각 정보를 제공해볼 예정입니다.
 
----
 
 # 마무리
 
@@ -618,7 +614,6 @@ if (!bBuffered && GetTASC())
 
 액션 게임에서 조작감은 정말 작은 차이에서 크게 갈립니다. 입력 버퍼 시스템은 그 차이를 지켜주는 장치라고 생각합니다. 긴 글 읽어주셔서 감사합니다.
 
----
 
 # 자료
 
