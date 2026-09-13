@@ -4,6 +4,8 @@ summary: 우리가 알던 언리얼 엔진이 바뀌고 있다.
 date: "Apr 07 2026"
 draft: false
 Category: "언리얼엔진"
+series: "Next Unreal"
+seriesOrder: 1
 tags:
     - UnrealEngine
     - NextUnreal

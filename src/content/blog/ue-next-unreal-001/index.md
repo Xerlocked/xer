@@ -4,6 +4,8 @@ summary: 데이터 기반으로 분기를 처리하는 새로운 시스템
 date: "May 01 2026"
 draft: false
 Category: "언리얼엔진"
+series: "Next Unreal"
+seriesOrder: 2
 tags:
     - UnrealEngine
     - NextUnreal
