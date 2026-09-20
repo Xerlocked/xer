@@ -1,0 +1,52 @@
+<section class="mt-12" aria-labelledby="comments-heading">
+  <h2 id="comments-heading" class="mb-6 text-2xl font-semibold text-foreground">
+    댓글
+  </h2>
+  <div class="giscus"></div>
+  <noscript>
+    <p class="text-sm text-muted-foreground">
+      댓글을 보려면 JavaScript를 활성화해 주세요.
+    </p>
+  </noscript>
+</section>
+
+<script is:inline>
+  (() => {
+    const container = document.querySelector(".giscus")
+    if (!container) return
+
+    const getTheme = () =>
+      document.documentElement.classList.contains("dark") ? "dark" : "light"
+
+    const script = document.createElement("script")
+    script.src = "https://giscus.app/client.js"
+    script.dataset.repo = "Xerlocked/xer"
+    script.dataset.repoId = "R_kgDORjIJIg"
+    script.dataset.category = "Announcements"
+    script.dataset.categoryId = "DIC_kwDORjIJIs4DGBIm"
+    script.dataset.mapping = "pathname"
+    script.dataset.strict = "0"
+    script.dataset.reactionsEnabled = "1"
+    script.dataset.emitMetadata = "0"
+    script.dataset.inputPosition = "bottom"
+    script.dataset.theme = getTheme()
+    script.dataset.lang = "ko"
+    script.dataset.loading = "lazy"
+    script.crossOrigin = "anonymous"
+    script.async = true
+    container.appendChild(script)
+
+    const observer = new MutationObserver(() => {
+      const iframe = document.querySelector("iframe.giscus-frame")
+      iframe?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme: getTheme() } } },
+        "https://giscus.app",
+      )
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+  })()
+</script>

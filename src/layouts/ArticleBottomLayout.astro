@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection, render } from "astro:content"
 import TableOfContents from "@components/TableOfContents.astro"
 import SeriesNavigation from "@components/SeriesNavigation.astro"
+import GiscusComments from "@components/GiscusComments.astro"
 import { getSeriesPosts } from "@lib/series"
 
 type Props = {
@@ -30,6 +31,7 @@ const next = series ? (index >= 0 ? items[index + 1] : undefined) : items[(index
   <article class:list={[{ "blog-content": collection === "blog" }]}>
     <Content/>
   </article>
+  {collection === "blog" && <GiscusComments />}
   {(prev || next) && <nav aria-label={series ? "시리즈 이전·다음 편" : "이전·다음 글"} class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {prev && <a href={`/${prev.collection}/${prev.id}`} class="ui-card group p-5 gap-3 flex items-center">
       <div class="order-2 w-full h-full group-hover:text-foreground blend">
